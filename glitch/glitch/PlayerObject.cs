@@ -33,7 +33,6 @@ namespace glitch
             HorizontalAcceleration = 10.0f;
             MaxHorizontalVelocity = 300f;
             IsJumping = false;
-            SpawnPoint = null;
         }
     }
 }
