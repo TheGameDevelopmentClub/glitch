@@ -67,7 +67,7 @@ namespace glitch
             if (previousKeyboardState.IsKeyDown(Keys.Right) && (currentKeyboardState.IsKeyUp(Keys.Right)) || ((previousGamePadState.DPad.Right == ButtonState.Pressed && currentGamePadState.DPad.Right == ButtonState.Released)))
             {
                 playerObject.physComp.velocity.X = 0;
-            }else 
+            } 
 
 
             previousKeyboardState = currentKeyboardState;

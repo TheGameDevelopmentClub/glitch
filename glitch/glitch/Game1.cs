@@ -17,6 +17,9 @@ namespace glitch
         PlayerObject player;
         List<GameObject> gameObjects;
 
+        List<Level> levels = new List<Level>();
+        Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -53,9 +56,11 @@ namespace glitch
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            //Loads assets into the dictionary
+            LoadAssets();
 
-            Texture2D playerSprite = Content.Load<Texture2D>("Player");
-
+            Texture2D playerSprite = textures["Player"];
             player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
 
@@ -117,6 +122,31 @@ namespace glitch
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        
+         
+        /// <summary>
+        /// Called from the LoadContent method at the start.
+        /// //noComment
+        /// </summary>
+        private void LoadAssets()
+        {
+            textures.Add("Deaths", Content.Load<Texture2D>("Deaths"));
+            textures.Add("Door", Content.Load<Texture2D>("Door"));
+            textures.Add("Ground", Content.Load<Texture2D>("Ground"));
+            textures.Add("I", Content.Load<Texture2D>("I"));
+            textures.Add("Player", Content.Load<Texture2D>("Player"));
+        }
+
+
+
+        /// <summary>
+        /// If the level was finished, load content for the next level.
+        /// </summary>
+        protected void LoadNextLevel()
+        {
+
         }
     }
 }
