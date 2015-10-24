@@ -23,8 +23,7 @@ namespace glitch.Physics
                 return instance;
             }
         }
-        public double gravity = 9.8;
-        public int minObjectDistanceToCheckCollisions = 400;
+        public double gravity = 0.1;
 
         public PlayerObject player;
         List<PhysicsComponent> staticObjects;
@@ -35,6 +34,9 @@ namespace glitch.Physics
 
         private PhysicsSystem()
         {
+            staticObjects = new List<PhysicsComponent>();
+            possiblePlayerCollisions = new List<PhysicsComponent>();
+            playerCollisions = new List<PhysicsComponent>();
         }
 
         public Vector2 applyEasement(GameTime time, Vector2 vect)
@@ -50,24 +52,65 @@ namespace glitch.Physics
 
         public void applyGravityToPlayer(GameTime time)
         {
-            player.physComp.velocity.Y = Math.Min(player.HorizontalAcceleration, player.physComp.velocity.Y + (int)(this.gravity * time.ElapsedGameTime.TotalMilliseconds));
+            player.physComp.velocity.Y = Math.Min(player.HorizontalAcceleration, player.physComp.velocity.Y + (int)(this.gravity * time.ElapsedGameTime.TotalSeconds));
         }
 
         public void checkPlayerCollisions()
         {
             possiblePlayerCollisions.Clear();
+            playerCollisions.Clear();
 
             foreach(PhysicsComponent phys in staticObjects)
             {
-                Vector2 diffVector = phys.hitBox.Center.ToVector2() - player.physComp.hitBox.Center.ToVector2();
-                if (diffVector.LengthSquared() < minObjectDistanceToCheckCollisions)
+                Vector2 diffVector = phys.hitBox.overall.Center.ToVector2() - player.physComp.hitBox.overall.Center.ToVector2();
+                
+                if (player.physComp.hitBox.isNearby(phys.hitBox))
                     possiblePlayerCollisions.Add(phys);
+            }
+
+            foreach(PhysicsComponent phys in possiblePlayerCollisions)
+            {
+                if (player.physComp.hitBox.isTouching(phys.hitBox))
+                    playerCollisions.Add(phys);
             }
         }
 
         public void handleCollisions()
         {
-            throw new NotImplementedException();
+            PhysicsComponent playerPhys = player.physComp;
+            foreach(PhysicsComponent phys in playerCollisions)
+            {
+                HitboxHit result = player.physComp.hitBox.Intersects(phys.hitBox);
+                Point offset = Point.Zero;
+
+                switch (result)
+                {
+                    case HitboxHit.Bottom:
+                        offset.Y -= player.physComp.hitBox.overall.Bottom - phys.hitBox.overall.Top;
+                        player.physComp.velocity.Y = 0;
+                        break;
+
+                    case HitboxHit.Right:
+                        offset.X -= phys.hitBox.overall.Left - player.physComp.hitBox.overall.Right;
+                        player.physComp.velocity.X = 0;
+                        break;
+
+                    case HitboxHit.Left:
+                        offset.X += player.physComp.hitBox.overall.Left - phys.hitBox.overall.Right;
+                        player.physComp.velocity.X = 0;
+                        break;
+
+                    case HitboxHit.Top:
+                        offset.Y += phys.hitBox.overall.Bottom - player.physComp.hitBox.overall.Top;
+                        player.physComp.velocity.Y = 0;
+                        break;
+
+                    case HitboxHit.None:
+                        continue;
+                }
+
+                player.Location += offset;
+            }
         }
 
     }

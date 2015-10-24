@@ -41,6 +41,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="InputHandler.cs" />
+    <Compile Include="Physics\Hitbox.cs" />
     <Compile Include="Physics\PhysicsComponent.cs" />
     <Compile Include="Physics\PhysicsSystem.cs" />
     <Compile Include="PlayerObject.cs" />

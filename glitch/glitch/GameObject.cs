@@ -5,16 +5,28 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using glitch.Physics;
 
 namespace glitch
 {
     public class GameObject
     {
-        public Rectangle drawSpace;
+        private Rectangle drawSpace;
         public bool isVisible;
         public PhysicsComponent physComp;
         public RenderComponent rendComp;
 
+        public Point Size
+        {
+            get { return drawSpace.Size;}
+            set { drawSpace.Size = value; this.physComp.ReSize(value); }
+        }
+
+        public Point Location
+        {
+            get { return drawSpace.Location; }
+            set { drawSpace.Location = value; this.physComp.UpdateHitBoxPosition(value); }
+        }
         public GameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             initGameObject(position, sprite, isVisible, type);
@@ -28,24 +40,17 @@ namespace glitch
         private void initGameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             //this.position = position;
-            this.drawSpace = new Rectangle(position.X, position.Y, sprite.Width/2, sprite.Height/2);
+            this.drawSpace = new Rectangle(position.X, position.Y, sprite.Width, sprite.Height);
             this.isVisible = isVisible;
 
             this.rendComp = new RenderComponent(sprite);
             this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
-            this.physComp.UpdateHitBoxPosition(sprite.Width / 2, sprite.Height / 2);
+
+            this.physComp.UpdateHitBoxPosition(position);
+            
+            if(type == PhysicsType.StaticObject)
+                PhysicsSystem.Instance.addStaticObject(this.physComp);
         } 
-
-        public void SetPosition(Point pos)
-        {
-            this.SetPosition(pos.X, pos.Y);
-        }
-
-        public void SetPosition(int x, int y)
-        {
-            this.drawSpace.X = x;
-            this.drawSpace.Y = y;
-        }
 
         public void Render(SpriteBatch batch)
         {

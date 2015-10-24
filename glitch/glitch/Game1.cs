@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using glitch.Physics;
+using System.Collections.Generic;
 
 namespace glitch
 {
@@ -13,12 +14,14 @@ namespace glitch
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle Screen;
-        public static PlayerObject player;
+        PlayerObject player;
+        List<GameObject> gameObjects;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            gameObjects = new List<GameObject>();
         }
 
         /// <summary>
@@ -51,7 +54,16 @@ namespace glitch
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true, PhysicsType.Player);
+            Texture2D playerSprite = Content.Load<Texture2D>("Player");
+
+            player = new PlayerObject(Screen.Center, playerSprite, true, PhysicsType.Player);
+            player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
+
+            GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
+            floor.Size = new Point(Screen.Width, 200);
+
+            gameObjects.Add(floor);
+
             PhysicsSystem.Instance.player = player;
         }
 
@@ -74,14 +86,13 @@ namespace glitch
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //InputHandler.GetInstance().updateStates();
-            //InputHandler.GetInstance().handlePlayerInput(player);
+            InputHandler.Instance.handlePlayerInput(player);
 
-            InputHandler.GetInstance().handlePlayerInput(player);
+            player.Location = player.physComp.ApplyVelocity(gameTime, player.Location);
 
-            player.SetPosition(player.physComp.ApplyVelocity(gameTime, player.drawSpace.Location));
-
-            //PhysicsSystem.Instance.applyGravityToPlayer(gameTime);
+            PhysicsSystem.Instance.applyGravityToPlayer(gameTime);
+            PhysicsSystem.Instance.checkPlayerCollisions();
+            PhysicsSystem.Instance.handleCollisions();
 
             base.Update(gameTime);
         }
@@ -98,6 +109,10 @@ namespace glitch
             spriteBatch.Begin();
 
             player.Render(spriteBatch);
+            foreach(GameObject gob in gameObjects)
+            {
+                gob.Render(spriteBatch);
+            }
 
             spriteBatch.End();
 

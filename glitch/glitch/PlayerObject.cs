@@ -10,13 +10,14 @@ namespace glitch
     public class PlayerObject : GameObject
     {
         public float HorizontalAcceleration { get; set; }
-        public float MaxHowizontalVelocity { get; set; }
+        public float MaxHorizontalVelocity { get; set; }
         public Boolean IsJumping { get; set; }
 
         public PlayerObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type) : base(position, sprite, isVisible, type)
         {
             setDefaults();
         }
+
 
         public PlayerObject(int x, int y, Texture2D sprite, bool isVisible, PhysicsType type) : base(x, y, sprite, isVisible, type)
         {
@@ -29,7 +30,7 @@ namespace glitch
         private void setDefaults()
         {
             HorizontalAcceleration = 1.0f;
-            MaxHowizontalVelocity = 10.0f;
+            MaxHorizontalVelocity = 0.5f;
             IsJumping = false;
         }
     }

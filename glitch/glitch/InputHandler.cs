@@ -20,23 +20,16 @@ namespace glitch
 
         public InputHandler() { }
 
-        public static InputHandler GetInstance()
+        public static InputHandler Instance
         {
-            if (inputHandler == null)
+            get
             {
-                inputHandler = new InputHandler();
+                if (inputHandler == null)
+                {
+                    inputHandler = new InputHandler();
+                }
+                return inputHandler;
             }
-            return inputHandler;
-        }
-
-        public void updateStates()
-        {
-            previousKeyboardState = currentKeyboardState;
-            previousGamePadState = currentGamePadState;
-
-
-            currentKeyboardState = Keyboard.GetState();
-            currentGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void handlePlayerInput(PlayerObject playerObject)
@@ -56,26 +49,22 @@ namespace glitch
 
             if (currentKeyboardState.IsKeyDown(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                //if (!playerObject.IsJumping && playerObject.physComp.velocity.X < -playerObject.MaxHowizontalVelocity)
-                {
-                    playerObject.physComp.velocity.X = -playerObject.MaxHowizontalVelocity;
-                }
+                playerObject.physComp.velocity.X = -playerObject.MaxHorizontalVelocity;
             }
+
 
             if (currentKeyboardState.IsKeyDown(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                //if (!playerObject.IsJumping && playerObject.physComp.velocity.X < playerObject.MaxHowizontalVelocity)
-                {
-                    playerObject.physComp.velocity.X = playerObject.MaxHowizontalVelocity;
-                }
+                playerObject.physComp.velocity.X = playerObject.MaxHorizontalVelocity;
             }
 
-            if ((previousKeyboardState.IsKeyDown(Keys.Left) || previousGamePadState.DPad.Left == ButtonState.Pressed) && (currentKeyboardState.IsKeyUp(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Released))
+            if ((previousKeyboardState.IsKeyDown(Keys.Left)  && currentKeyboardState.IsKeyUp(Keys.Left)) || (previousGamePadState.DPad.Left == ButtonState.Pressed && currentGamePadState.DPad.Left == ButtonState.Released))
             {
                 playerObject.physComp.velocity.X = 0;
             }
 
-            if ((previousKeyboardState.IsKeyDown(Keys.Right) || previousGamePadState.DPad.Right == ButtonState.Pressed) && (currentKeyboardState.IsKeyUp(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Released))
+
+            if (previousKeyboardState.IsKeyDown(Keys.Right) && (currentKeyboardState.IsKeyUp(Keys.Right)) || ((previousGamePadState.DPad.Right == ButtonState.Pressed && currentGamePadState.DPad.Right == ButtonState.Released)))
             {
                 playerObject.physComp.velocity.X = 0;
             }else 
