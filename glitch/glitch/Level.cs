@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -26,7 +25,7 @@ namespace glitch
             this.LevelNumber = levelNumber;
             DefaultValues();
             LevelGroundObjects = new List<GameObject>();
-            this.Door = new GameObject(DoorPoint, doorContent, true, PhysicsType.StaticObject);
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
         }
 
         public Level(int levelNumber, Point playerStartingPoint, Point doorPoint, int levelHeight, Texture2D doorContent)
@@ -37,7 +36,7 @@ namespace glitch
             this.LevelGroundLevel = levelHeight;
             LevelGroundObjects = new List<GameObject>();
 
-            this.Door = new GameObject(DoorPoint, doorContent, true, PhysicsType.StaticObject);
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
         }
 
         private void DefaultValues()
@@ -50,7 +49,7 @@ namespace glitch
 
         public void AddGroundObject(Point groundPoint, Texture2D texture, bool isVisible)
         {
-            LevelGroundObjects.Add(new GameObject(groundPoint, texture, isVisible, PhysicsType.StaticObject));
+            LevelGroundObjects.Add(new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject));
         }
 
         public void RenderLevel(SpriteBatch spriteBatch)
