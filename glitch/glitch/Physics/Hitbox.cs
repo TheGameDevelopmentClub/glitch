@@ -47,13 +47,13 @@ namespace glitch.Physics
             overall.Size = sizeAsPoint;
             left.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
             right.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
-            top.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
-            bottom.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
+            top.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
+            bottom.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
 
             leftOffset = new Vector2(0, (overall.Height - left.Height) / 2);
             rightOffset = new Vector2((overall.Width - right.Width), (overall.Height - right.Height) / 2);
-            topOffset = Vector2.Zero;
-            bottomOffset = new Vector2(0, size.Y - bottom.Height);
+            topOffset = new Vector2(3, 0);
+            bottomOffset = new Vector2(3, size.Y - bottom.Height);
 
             threshold = (int) Math.Pow(Math.Max(overall.Width, overall.Height), 2);
 
