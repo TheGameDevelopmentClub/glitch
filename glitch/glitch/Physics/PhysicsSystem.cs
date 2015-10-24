@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace glitch.Physics
 {
@@ -23,6 +24,14 @@ namespace glitch.Physics
             }
         }
         public double gravity = 9.8;
+        public int minObjectDistanceToCheckCollisions = 400;
+
+        public PlayerObject player;
+        List<PhysicsComponent> staticObjects;
+        public PhysicsComponent door;
+
+        List<PhysicsComponent> possiblePlayerCollisions;
+        List<PhysicsComponent> playerCollisions;
 
         private PhysicsSystem()
         {
@@ -34,19 +43,26 @@ namespace glitch.Physics
             return Vector2.Zero;
         }
 
-        public void addComponent(PhysicsComponent newComponent)
+        public void addStaticObject(PhysicsComponent newComponent)
         {
-            throw new NotImplementedException();
+            staticObjects.Add(newComponent);
         }
 
-        public void applyGravity(GameTime time)
+        public void applyGravityToPlayer(GameTime time)
         {
-            throw new NotImplementedException();
+            player.physComp.velocity.Y = Math.Min(player.HorizontalAcceleration, player.physComp.velocity.Y + (int)(this.gravity * time.ElapsedGameTime.TotalMilliseconds));
         }
 
-        public void checkCollisions()
+        public void checkPlayerCollisions()
         {
-            throw new NotImplementedException();
+            possiblePlayerCollisions.Clear();
+
+            foreach(PhysicsComponent phys in staticObjects)
+            {
+                Vector2 diffVector = phys.hitBox.Center.ToVector2() - player.physComp.hitBox.Center.ToVector2();
+                if (diffVector.LengthSquared() < minObjectDistanceToCheckCollisions)
+                    possiblePlayerCollisions.Add(phys);
+            }
         }
 
         public void handleCollisions()

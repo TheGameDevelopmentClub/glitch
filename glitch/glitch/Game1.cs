@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using glitch.Physics;
 
 namespace glitch
 {
@@ -12,7 +13,7 @@ namespace glitch
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle Screen;
-        PlayerObject player;
+        public static PlayerObject player;
 
         public Game1()
         {
@@ -51,6 +52,7 @@ namespace glitch
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true, PhysicsType.Player);
+            PhysicsSystem.Instance.player = player;
         }
 
         /// <summary>
@@ -72,11 +74,14 @@ namespace glitch
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            InputHandler.GetInstance().updateStates();
+            //InputHandler.GetInstance().updateStates();
+            //InputHandler.GetInstance().handlePlayerInput(player);
+
             InputHandler.GetInstance().handlePlayerInput(player);
 
             player.SetPosition(player.physComp.ApplyVelocity(gameTime, player.drawSpace.Location));
-            // TODO: Add your update logic here
+
+            //PhysicsSystem.Instance.applyGravityToPlayer(gameTime);
 
             base.Update(gameTime);
         }

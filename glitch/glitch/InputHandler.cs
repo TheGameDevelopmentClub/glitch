@@ -38,8 +38,11 @@ namespace glitch
             currentKeyboardState = Keyboard.GetState();
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
         }
+
         public void handlePlayerInput(PlayerObject playerObject)
         {
+            currentKeyboardState = Keyboard.GetState();
+            currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (currentKeyboardState.IsKeyDown(Keys.Space) || currentGamePadState.IsButtonDown(Buttons.A))
             {
@@ -75,9 +78,11 @@ namespace glitch
             if ((previousKeyboardState.IsKeyDown(Keys.Right) || previousGamePadState.DPad.Right == ButtonState.Pressed) && (currentKeyboardState.IsKeyUp(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Released))
             {
                 playerObject.physComp.velocity.X = 0;
-            }
+            }else 
 
 
+            previousKeyboardState = currentKeyboardState;
+            previousGamePadState = currentGamePadState;
         }
 
     }
