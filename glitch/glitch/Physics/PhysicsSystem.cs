@@ -30,7 +30,8 @@ namespace glitch.Physics
 
         public Vector2 applyEasement(GameTime time, Vector2 vect)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Vector2.Zero;
         }
 
         public void addComponent(PhysicsComponent newComponent)

@@ -42,37 +42,38 @@ namespace glitch
         public void handlePlayerInput(PlayerObject playerObject)
         {
 
-            if (currentKeyboardState.IsKeyDown(Keys.Space) || currentGamePadState.IsButtonUp(Buttons.A))
+            if (currentKeyboardState.IsKeyDown(Keys.Space) || currentGamePadState.IsButtonDown(Buttons.A))
             {
                 if (!playerObject.IsJumping)
                 {
-                    playerObject.physComp.velocity.Y = 10.0f;
+                    playerObject.physComp.velocity.Y = -10.0f;
+                    playerObject.IsJumping = true;
                     //TODO: Change the Vertical velocity to a higher or lower based on play.
                 }
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                if (!playerObject.IsJumping && playerObject.physComp.velocity.X < -playerObject.MaxHowizontalVelocity)
-                {
-                    playerObject.physComp.velocity.X = -playerObject.MaxHowizontalVelocity;
-                }
+                
+                playerObject.physComp.velocity.X = -playerObject.MaxHorizontalVelocity;
+                
             }
+
 
             if (currentKeyboardState.IsKeyDown(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                if (!playerObject.IsJumping && playerObject.physComp.velocity.X < playerObject.MaxHowizontalVelocity)
-                {
-                    playerObject.physComp.velocity.X = playerObject.MaxHowizontalVelocity;
-                }
+                
+                playerObject.physComp.velocity.X = playerObject.MaxHorizontalVelocity;
+                
             }
 
-            if ((previousKeyboardState.IsKeyDown(Keys.Left) || previousGamePadState.DPad.Left == ButtonState.Pressed) && (currentKeyboardState.IsKeyUp(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Released))
+            if ((previousKeyboardState.IsKeyDown(Keys.Left)  && currentKeyboardState.IsKeyUp(Keys.Left)) || (previousGamePadState.DPad.Left == ButtonState.Pressed && currentGamePadState.DPad.Left == ButtonState.Released))
             {
                 playerObject.physComp.velocity.X = 0;
             }
 
-            if ((previousKeyboardState.IsKeyDown(Keys.Right) || previousGamePadState.DPad.Right == ButtonState.Pressed) && (currentKeyboardState.IsKeyUp(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Released))
+
+            if (previousKeyboardState.IsKeyDown(Keys.Right) && (currentKeyboardState.IsKeyUp(Keys.Right)) || ((previousGamePadState.DPad.Right == ButtonState.Pressed && currentGamePadState.DPad.Right == ButtonState.Released)))
             {
                 playerObject.physComp.velocity.X = 0;
             }

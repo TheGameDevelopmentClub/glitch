@@ -10,22 +10,49 @@ namespace glitch
 {
     public class GameObject
     {
-        public Point position;
+        public Rectangle drawSpace;
         public bool isVisible;
         public PhysicsComponent physComp;
         public RenderComponent rendComp;
 
-
-        public GameObject(Point position, bool isVisible)
+        public GameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
-            this.position = position;
-            this.isVisible = isVisible;
+            initGameObject(position, sprite, isVisible, type);
         }
 
-        public GameObject(int x, int y, bool isVisible)
+        public GameObject(int x, int y, Texture2D sprite, bool isVisible, PhysicsType type)
         {
-            this.position = new Point(x, y);
+            initGameObject(new Point(x, y), sprite, isVisible, type);
+        }
+
+        private void initGameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
+        {
+            //this.position = position;
+            this.drawSpace = new Rectangle(position.X, position.Y, sprite.Width/2, sprite.Height/2);
             this.isVisible = isVisible;
+
+            this.rendComp = new RenderComponent(sprite);
+            this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
+            this.physComp.UpdateHitBoxPosition(sprite.Width / 2, sprite.Height / 2);
+        } 
+
+        public void SetPosition(Point pos)
+        {
+            this.SetPosition(pos.X, pos.Y);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            this.drawSpace.X = x;
+            this.drawSpace.Y = y;
+        }
+
+        public void Render(SpriteBatch batch)
+        {
+            if (this.isVisible)
+            {
+                this.rendComp.Render(batch, this.drawSpace);
+            }
         }
     }
 }

@@ -31,5 +31,10 @@ namespace glitch
         {
             this.Render(batch, pos.X, pos.Y);
         }
+
+        public void Render(SpriteBatch batch, Rectangle drawSpace)
+        {
+            batch.Draw(this.sprite, drawSpace, Color.White);
+        }
     }
 }
