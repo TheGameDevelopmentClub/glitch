@@ -51,6 +51,10 @@ namespace glitch
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true, PhysicsType.Player);
+
+
+         
+            
         }
 
         /// <summary>
