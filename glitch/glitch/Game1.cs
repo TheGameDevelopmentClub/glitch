@@ -56,7 +56,6 @@ namespace glitch
 
             //Loads assets into a dicitonary
             LoadAssets();
-            
 
             player = new PlayerObject(Screen.Center, textures["Player"], true, PhysicsType.Player);
 
@@ -126,14 +125,5 @@ namespace glitch
             textures.Add("Player", Content.Load<Texture2D>("Player"));
         }
 
-
-
-        /// <summary>
-        /// If the level was finished, load content for the next level.
-        /// </summary>
-        protected void LoadNextLevel()
-        {
-
-        }
     }
 }
