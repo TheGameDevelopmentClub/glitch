@@ -13,7 +13,7 @@ namespace glitch
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Rectangle Screen;
+        public static Rectangle Screen;
         PlayerObject player;
         List<GameObject> gameObjects;
 

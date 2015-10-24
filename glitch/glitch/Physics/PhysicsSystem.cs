@@ -113,6 +113,11 @@ namespace glitch.Physics
 
                 player.Location += offset;
             }
+            
+            if(player.position.Y > Game1.Screen.Height + 100)
+            {
+                player.Respawn();
+            }
         }
 
     }
