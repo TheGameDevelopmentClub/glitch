@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace glitch
 {
-    class RenderComponent
+    public class RenderComponent
     {
         Texture2D sprite;
 
@@ -30,6 +30,11 @@ namespace glitch
         public void Render(SpriteBatch batch, Point pos)
         {
             this.Render(batch, pos.X, pos.Y);
+        }
+
+        public void Render(SpriteBatch batch, Rectangle drawSpace)
+        {
+            batch.Draw(this.sprite, drawSpace, Color.White);
         }
     }
 }

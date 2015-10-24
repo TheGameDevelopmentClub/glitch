@@ -39,7 +39,7 @@ namespace glitch
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
-        public void handlePlayerInput(GameObject gameObject)
+        public void handlePlayerInput(GameObject gameObject, PlayerObject player)
         {
             
         }

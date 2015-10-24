@@ -12,6 +12,7 @@ namespace glitch
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle Screen;
+        PlayerObject player;
 
         public Game1()
         {
@@ -49,7 +50,7 @@ namespace glitch
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true);
         }
 
         /// <summary>
@@ -85,6 +86,11 @@ namespace glitch
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            player.Render(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
