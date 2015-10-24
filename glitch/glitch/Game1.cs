@@ -145,6 +145,7 @@ namespace glitch
             if (currentLevel == null)
             {
                 player.SpawnPoint = new Point(30, 300);
+
                 currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
                 currentLevel.AddGroundObject(new Point(-100, 600), new Point(Screen.Width + 200, 400), textures["Ground"], true);
                 currentLevel.AddGroundObject(new Point(0, 150), new Point(200, 100), textures["Ground"], true);
