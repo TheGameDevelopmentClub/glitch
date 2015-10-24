@@ -9,7 +9,7 @@ using glitch.Physics;
 
 namespace glitch
 {
-    class PhysicsComponent
+    public class PhysicsComponent
     {
         public double gravityScale = 1.0;
         public Vector2 velocity = Vector2.Zero;

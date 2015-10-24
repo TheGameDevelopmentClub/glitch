@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace glitch
 {
-    class GameObject
+    public class GameObject
     {
         public Point position;
         public bool isVisible;
         public PhysicsComponent physComp;
         public RenderComponent rendComp;
+
 
         public GameObject(Point position, bool isVisible)
         {

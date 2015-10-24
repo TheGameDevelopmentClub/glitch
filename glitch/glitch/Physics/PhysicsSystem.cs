@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace glitch.Physics
 {
-    class PhysicsSystem
+    public class PhysicsSystem
     {
         private static PhysicsSystem instance;
 

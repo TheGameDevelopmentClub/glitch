@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace glitch
 {
-    class RenderComponent
+    public class RenderComponent
     {
         Texture2D sprite;
 
