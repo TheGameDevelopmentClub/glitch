@@ -11,6 +11,7 @@ namespace glitch
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Rectangle Screen;
 
         public Game1()
         {
@@ -26,8 +27,16 @@ namespace glitch
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            //Setting up the screen
+            Screen = new Rectangle(0, 0, 1366, 768);
 
+            //Spawning the game window in the upper left of the screen
+            var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
+            form.Location = new System.Drawing.Point(Screen.X, Screen.Y); 
+
+            graphics.PreferredBackBufferHeight = Screen.Height;
+            graphics.PreferredBackBufferWidth = Screen.Width;
+            graphics.ApplyChanges();
             base.Initialize();
         }
 
