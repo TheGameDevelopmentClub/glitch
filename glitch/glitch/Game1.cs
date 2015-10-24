@@ -14,7 +14,12 @@ namespace glitch
 
         public Game1()
         {
+            Rectangle screen = new Rectangle(0, 0, 1366, 768);
+
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = screen.Height;
+            graphics.PreferredBackBufferWidth = screen.Width;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
