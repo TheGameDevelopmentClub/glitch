@@ -36,6 +36,17 @@ namespace glitch
             this.physComp.UpdateHitBoxPosition(sprite.Width / 2, sprite.Height / 2);
         } 
 
+        public void SetPosition(Point pos)
+        {
+            this.SetPosition(pos.X, pos.Y);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            this.drawSpace.X = x;
+            this.drawSpace.Y = y;
+        }
+
         public void Render(SpriteBatch batch)
         {
             if (this.isVisible)

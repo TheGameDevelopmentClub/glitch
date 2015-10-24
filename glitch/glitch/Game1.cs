@@ -72,6 +72,10 @@ namespace glitch
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            InputHandler.GetInstance().updateStates();
+            InputHandler.GetInstance().handlePlayerInput(player);
+
+            player.SetPosition(player.physComp.ApplyVelocity(gameTime, player.drawSpace.Location));
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -83,7 +87,7 @@ namespace glitch
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
