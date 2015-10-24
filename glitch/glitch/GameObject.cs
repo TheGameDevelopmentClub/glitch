@@ -15,25 +15,25 @@ namespace glitch
         public PhysicsComponent physComp;
         public RenderComponent rendComp;
 
-        public GameObject(Point position, Texture2D sprite, bool isVisible)
+        public GameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
-            initGameObject(position, sprite, isVisible);
+            initGameObject(position, sprite, isVisible, type);
         }
 
-        public GameObject(int x, int y, Texture2D sprite, bool isVisible)
+        public GameObject(int x, int y, Texture2D sprite, bool isVisible, PhysicsType type)
         {
-            initGameObject(new Point(x, y), sprite, isVisible);
+            initGameObject(new Point(x, y), sprite, isVisible, type);
         }
 
-        private void initGameObject(Point position, Texture2D sprite, bool isVisible)
+        private void initGameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             //this.position = position;
             this.drawSpace = new Rectangle(position.X, position.Y, sprite.Width/2, sprite.Height/2);
             this.isVisible = isVisible;
 
             this.rendComp = new RenderComponent(sprite);
-            this.physComp = new PhysicsComponent(sprite.Width, sprite.Height);
-            this.physComp.UpdatePosition(sprite.Width / 2, sprite.Height / 2);
+            this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
+            this.physComp.UpdateHitBoxPosition(sprite.Width / 2, sprite.Height / 2);
         } 
 
         public void Render(SpriteBatch batch)

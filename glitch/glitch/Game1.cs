@@ -50,7 +50,7 @@ namespace glitch
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true);
+            player = new PlayerObject(Screen.Center, Content.Load<Texture2D>("Player"), true, PhysicsType.Player);
         }
 
         /// <summary>
