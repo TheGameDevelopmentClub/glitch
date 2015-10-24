@@ -12,6 +12,7 @@ namespace glitch
         public float HorizontalAcceleration { get; set; }
         public float MaxHorizontalVelocity { get; set; }
         public Boolean IsJumping { get; set; }
+        public Point SpawnPoint { get; set; }
 
         public PlayerObject(Vector2 position, Texture2D sprite, bool isVisible, PhysicsType type) : base(position, sprite, isVisible, type)
         {
@@ -32,6 +33,7 @@ namespace glitch
             HorizontalAcceleration = 10.0f;
             MaxHorizontalVelocity = 300f;
             IsJumping = false;
+            SpawnPoint = null;
         }
     }
 }

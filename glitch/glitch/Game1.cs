@@ -15,7 +15,9 @@ namespace glitch
         SpriteBatch spriteBatch;
         Rectangle Screen;
         PlayerObject player;
+        Level currentLevel;
         List<GameObject> gameObjects;
+        int levelNumber = 0;
 
         List<Level> levels = new List<Level>();
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
@@ -64,10 +66,11 @@ namespace glitch
             player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
 
-            GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
-            floor.Size = new Point(Screen.Width, 200);
+            //GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
+            //floor.Size = new Point(Screen.Width, 200);
 
-            gameObjects.Add(floor);
+            //gameObjects.Add(floor);
+            CreateLevel();
 
             PhysicsSystem.Instance.player = player;
         }
@@ -114,10 +117,7 @@ namespace glitch
             spriteBatch.Begin();
 
             player.Render(spriteBatch);
-            foreach(GameObject gob in gameObjects)
-            {
-                gob.Render(spriteBatch);
-            }
+            currentLevel.RenderLevel(spriteBatch);
 
             spriteBatch.End();
 
@@ -137,6 +137,27 @@ namespace glitch
             textures.Add("Ground", Content.Load<Texture2D>("Ground"));
             textures.Add("I", Content.Load<Texture2D>("I"));
             textures.Add("Player", Content.Load<Texture2D>("Player"));
+        }
+
+
+        private void CreateLevel()
+        {
+            if (currentLevel == null)
+            {
+                player.SpawnPoint = new Point(30, 300);
+                currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
+                currentLevel.AddGroundObject(new Point(-100, 600), new Point(Screen.Width + 200, 400), textures["Ground"], true);
+                currentLevel.AddGroundObject(new Point(0, 150), new Point(200, 100), textures["Ground"], true);
+            }
+            else if(currentLevel.LevelNumber == 1)
+            {
+                //Render level 2
+            }
+            else if(currentLevel.LevelNumber == 2)
+            {
+                //Render level 3
+            }
+
         }
 
     }
