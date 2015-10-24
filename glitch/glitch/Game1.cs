@@ -56,7 +56,7 @@ namespace glitch
 
             Texture2D playerSprite = Content.Load<Texture2D>("Player");
 
-            player = new PlayerObject(Screen.Center, playerSprite, true, PhysicsType.Player);
+            player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
 
             GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);

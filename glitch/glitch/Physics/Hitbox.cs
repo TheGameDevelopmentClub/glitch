@@ -16,8 +16,9 @@ namespace glitch.Physics
     public class Hitbox
     {
         public Rectangle overall, left, right, top, bottom;
-        public Point leftOffset, rightOffset, topOffset, bottomOffset;
+        public Vector2 leftOffset, rightOffset, topOffset, bottomOffset;
         public int threshold;
+        public Vector2 position;
 
         public Hitbox(int width, int height)
         {
@@ -26,49 +27,52 @@ namespace glitch.Physics
             right = new Rectangle();
             top = new Rectangle();
             bottom = new Rectangle();
-            leftOffset = new Point();
-            rightOffset = new Point();
-            topOffset = new Point();
-            bottomOffset = new Point();
+            leftOffset = new Vector2();
+            rightOffset = new Vector2();
+            topOffset = new Vector2();
+            bottomOffset = new Vector2();
+            position = new Vector2();
 
             this.ReSize(width, height);
         }
 
         public void ReSize(int width, int height)
         {
-            this.ReSize(new Point(width, height));
+            this.ReSize(new Vector2(width, height));
         }
 
-        public void ReSize(Point size)
+        public void ReSize(Vector2 size)
         {
-            overall.Size = size;
-            left.Size = new Point(size.X / 2, size.Y / 3);
-            right.Size = new Point(size.X / 2, size.Y / 3);
-            top.Size = new Point(size.X, size.Y / 3);
-            bottom.Size = new Point(size.X, size.Y / 3);
+            Point sizeAsPoint = size.ToPoint();
+            overall.Size = sizeAsPoint;
+            left.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
+            right.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
+            top.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
+            bottom.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
 
-            leftOffset = new Point(0, size.Y/ 3);
-            rightOffset = new Point(size.X/ 2, size.Y/ 3);
-            topOffset = Point.Zero;
-            bottomOffset = new Point(0, (2 * size.X) / 3);
+            leftOffset = new Vector2(0, (overall.Height - left.Height) / 2);
+            rightOffset = new Vector2((overall.Width - right.Width), (overall.Height - right.Height) / 2);
+            topOffset = Vector2.Zero;
+            bottomOffset = new Vector2(0, size.Y - bottom.Height);
 
             threshold = (int) Math.Pow(Math.Max(overall.Width, overall.Height), 2);
 
-            this.UpdatePosition(overall.Location);
+            this.UpdatePosition(overall.Location.ToVector2());
         }
 
-        public void UpdatePosition(Point pos)
+        public void UpdatePosition(Vector2 pos)
         {
-            overall.Location = pos;
-            left.Location = pos + leftOffset;
-            right.Location = pos + rightOffset;
-            top.Location = pos + topOffset;
-            bottom.Location = pos + bottomOffset;
+            this.position = pos;
+            overall.Location = position.ToPoint();
+            left.Location = (position + leftOffset).ToPoint();
+            right.Location = (position + rightOffset).ToPoint();
+            top.Location = (position + topOffset).ToPoint();
+            bottom.Location = (position + bottomOffset).ToPoint();
         }
 
         public void UpdatePosition(int x, int y)
         {
-            this.UpdatePosition(new Point(x, y));
+            this.UpdatePosition(new Vector2(x, y));
         }
 
         public bool isTouching(Hitbox oppHitbox)
@@ -107,6 +111,10 @@ namespace glitch.Physics
                 else if (top.Intersects(rect))
                 {
                     return HitboxHit.Top;
+                }
+                else
+                {
+                    throw new NotImplementedException();
                 }
             }
             return HitboxHit.None;

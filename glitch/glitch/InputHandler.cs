@@ -41,7 +41,7 @@ namespace glitch
             {
                 if (!playerObject.IsJumping)
                 {
-                    playerObject.physComp.velocity.Y = -10.0f;
+                    playerObject.physComp.velocity.Y = -500.0f;
                     playerObject.IsJumping = true;
                     //TODO: Change the Vertical velocity to a higher or lower based on play.
                 }

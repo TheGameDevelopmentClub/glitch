@@ -37,6 +37,10 @@ namespace glitch
         {
             this.hitBox.UpdatePosition(x, y);
         }
+        public void UpdateHitBoxPosition(Vector2 pos)
+        {
+            this.hitBox.UpdatePosition(pos);
+        }
 
         public void ReSize(int width, int height)
         {
@@ -48,14 +52,9 @@ namespace glitch
             this.ReSize(size.X, size.Y);
         }
 
-        public void UpdateHitBoxPosition(Point pos)
+        public Vector2 ApplyVelocity(GameTime time, Vector2 position)
         {
-            this.hitBox.UpdatePosition(pos);
-        }
-
-        public Point ApplyVelocity(GameTime time, Point position)
-        {
-            Point newPoint = new Point(position.X + (int)(this.velocity.X * time.ElapsedGameTime.TotalSeconds), position.Y + (int)(this.velocity.Y * time.ElapsedGameTime.TotalSeconds));
+            Vector2 newPoint = new Vector2(position.X + (int)(this.velocity.X * time.ElapsedGameTime.TotalSeconds), position.Y + (float)(this.velocity.Y * time.ElapsedGameTime.TotalSeconds));
             this.UpdateHitBoxPosition(newPoint);
 
             return newPoint;

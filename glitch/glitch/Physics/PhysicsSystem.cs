@@ -23,7 +23,7 @@ namespace glitch.Physics
                 return instance;
             }
         }
-        public double gravity = 0.1;
+        public double gravity = 1000;
 
         public PlayerObject player;
         List<PhysicsComponent> staticObjects;
@@ -52,7 +52,8 @@ namespace glitch.Physics
 
         public void applyGravityToPlayer(GameTime time)
         {
-            player.physComp.velocity.Y = Math.Min(player.HorizontalAcceleration, player.physComp.velocity.Y + (int)(this.gravity * time.ElapsedGameTime.TotalSeconds));
+            //player.physComp.velocity.Y = (float)Math.Min(player.HorizontalAcceleration, player.physComp.velocity.Y + (this.gravity * time.ElapsedGameTime.TotalSeconds));
+            player.physComp.velocity.Y += (float)(this.gravity * time.ElapsedGameTime.TotalSeconds);
         }
 
         public void checkPlayerCollisions()
@@ -81,13 +82,14 @@ namespace glitch.Physics
             foreach(PhysicsComponent phys in playerCollisions)
             {
                 HitboxHit result = player.physComp.hitBox.Intersects(phys.hitBox);
-                Point offset = Point.Zero;
+                Vector2 offset = Vector2.Zero;
 
                 switch (result)
                 {
                     case HitboxHit.Bottom:
                         offset.Y -= player.physComp.hitBox.overall.Bottom - phys.hitBox.overall.Top;
                         player.physComp.velocity.Y = 0;
+                        player.IsJumping = false;
                         break;
 
                     case HitboxHit.Right:

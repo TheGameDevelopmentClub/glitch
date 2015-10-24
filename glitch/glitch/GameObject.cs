@@ -15,6 +15,7 @@ namespace glitch
         public bool isVisible;
         public PhysicsComponent physComp;
         public RenderComponent rendComp;
+        public Vector2 position;
 
         public Point Size
         {
@@ -22,25 +23,26 @@ namespace glitch
             set { drawSpace.Size = value; this.physComp.ReSize(value); }
         }
 
-        public Point Location
+        public Vector2 Location
         {
-            get { return drawSpace.Location; }
-            set { drawSpace.Location = value; this.physComp.UpdateHitBoxPosition(value); }
+            get { return position; }
+            set { position = value;  drawSpace.Location = value.ToPoint(); this.physComp.UpdateHitBoxPosition(value); }
         }
-        public GameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
+        public GameObject(Vector2 position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             initGameObject(position, sprite, isVisible, type);
         }
 
         public GameObject(int x, int y, Texture2D sprite, bool isVisible, PhysicsType type)
         {
-            initGameObject(new Point(x, y), sprite, isVisible, type);
+            initGameObject(new Vector2(x, y), sprite, isVisible, type);
         }
 
-        private void initGameObject(Point position, Texture2D sprite, bool isVisible, PhysicsType type)
+        private void initGameObject(Vector2 position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             //this.position = position;
-            this.drawSpace = new Rectangle(position.X, position.Y, sprite.Width, sprite.Height);
+            this.position = position;
+            this.drawSpace = new Rectangle(position.ToPoint().X, position.ToPoint().Y, sprite.Width, sprite.Height);
             this.isVisible = isVisible;
 
             this.rendComp = new RenderComponent(sprite);
