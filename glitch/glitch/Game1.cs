@@ -131,27 +131,7 @@ namespace glitch
             PhysicsSystem.Instance.handleCollisions();
 
 
-            if(currentLevel != null && currentLevel.LevelNumber == 0)
-            {
-                if(forFlicker >= 0)
-                {
-                    forFlicker -= gameTime.ElapsedGameTime.Milliseconds;
-                }
-                else
-                {
-                    if(isColorTitle)
-                    {
-                        isColorTitle = false;
-                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoW"];
-                    }
-                    else
-                    {
-                        isColorTitle = true;
-                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoC"];
-                    }
-                    forFlicker = r.Next(75, 450);
-                }
-            }
+            PlayerMovement(gameTime);
 
             base.Update(gameTime);
         }
@@ -308,6 +288,31 @@ namespace glitch
             if (currentLevel.LevelNumber == 2)
             {
                 currentLevel.AddObject(new Point(355 + (deaths * 55), 650), deathCounter, true);
+            }
+        }
+
+        private void PlayerMovement(GameTime gameTime)
+        {
+            if (currentLevel != null && currentLevel.LevelNumber == 0)
+            {
+                if (forFlicker >= 0)
+                {
+                    forFlicker -= gameTime.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    if (isColorTitle)
+                    {
+                        isColorTitle = false;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoW"];
+                    }
+                    else
+                    {
+                        isColorTitle = true;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoC"];
+                    }
+                    forFlicker = r.Next(75, 450);
+                }
             }
         }
 
