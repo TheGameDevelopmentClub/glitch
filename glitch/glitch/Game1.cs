@@ -209,8 +209,10 @@ namespace glitch
 
             if (currentLevel == null)
             {
+                
 
-            }//testing, remove for debug
+
+            }//testing, remove after debug
 
             if (currentLevel == null)
             {
@@ -257,13 +259,20 @@ namespace glitch
             }
             else if (currentLevel.LevelNumber == 2)
             {
-                //Show Level 3
                 player.SpawnPoint = new Point(30, 300);
                 player.DeathCount = 0;
 
                 currentLevel = new Level(3, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
-                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 5, 200), textures["Ground"], true);
 
+                currentLevel.AddObject(new Point(-100, 600), new Point(180, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(500, 600), new Point(Screen.Width / 5 + 200, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point((17 * (Screen.Width / 20)), 600), new Point(Screen.Width / 3 + 200, 200), textures["Ground"], true);
+
+
+
+                currentLevel.AddTeleportObject(new Point(0 - 25 - player.Size.X, 0), new Point(25, Screen.Height), textures["Portal"], true, new Point(550, 500 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(500 + (Screen.Width / 5), Screen.Height), new Point((17 * (Screen.Width / 20)) - (500 + (Screen.Width / 5)), 100), textures["Ground"], true, new Point(Screen.Width - 150, 400 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(500 + (Screen.Width / 5) + 350, 400), new Point((17 * (Screen.Width / 20)) - (500 + (Screen.Width / 5) + 350), 600), textures["Ground"], false, new Point(550, 500 - player.Size.Y));
 
 
             }
