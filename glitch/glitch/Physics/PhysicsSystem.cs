@@ -51,7 +51,6 @@ namespace glitch.Physics
 
         public void ClearStage()
         {
-            door = null;
             staticObjects.Clear();
             mechanicsObjects.Clear();
         }
@@ -209,6 +208,7 @@ namespace glitch.Physics
             if(player.position.Y > Game1.Screen.Height + 100)
             {
                 player.Respawn();
+
             }
         }
 

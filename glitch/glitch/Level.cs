@@ -28,7 +28,6 @@ namespace glitch
             this.LevelNumber = levelNumber;
             DefaultValues();
             LevelObjects = new List<GameObject>();
-
             this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.Door);
             this.Door.Size = new Point(30, 60);
 
@@ -65,7 +64,6 @@ namespace glitch
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             LevelObjects.Add(tempGameObject);
-
         }
 
         public void AddTeleportObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible, Point destination)
