@@ -30,6 +30,7 @@ namespace glitch
         int forFlicker = 0;
         Random r = new Random();
         bool isColorTitle = false;
+        int disableInputHandler = 0;
 
         public Game1()
         {
@@ -108,9 +109,20 @@ namespace glitch
             {
                 PhysicsSystem.Instance.playerTouchedDoor = false;
                 CreateLevel();
+                disableInputHandler = 500;
             }
 
-            InputHandler.Instance.handlePlayerInput(player);
+            if (disableInputHandler > 0)
+            {
+                disableInputHandler -= gameTime.ElapsedGameTime.Milliseconds;
+                InputHandler.Instance.DisablePlayerInput(player);
+            }
+            else 
+            {
+                InputHandler.Instance.handlePlayerInput(player);
+                disableInputHandler = 0;
+            }
+
 
             player.Location = player.physComp.ApplyVelocity(gameTime, player.Location);
 
