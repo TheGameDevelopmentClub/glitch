@@ -65,13 +65,14 @@ namespace glitch
             Texture2D playerSprite = textures["Player"];
             player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
-
+            
             //GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
             //floor.Size = new Point(Screen.Width, 200);
 
             //gameObjects.Add(floor);
             CreateLevel();
 
+            player.Respawn(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
         }
 
@@ -147,6 +148,7 @@ namespace glitch
                 player.SpawnPoint = new Point(30, 300);
 
                 currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
+                //currentLevel.AddGroundObject(new Point(-100, 600), new Point(Screen.Width + 200, 200), textures["Ground"], true);
                 currentLevel.AddGroundObject(new Point(-100, 600), new Point(Screen.Width/3, 200), textures["Ground"], true);
                 currentLevel.AddGroundObject(new Point((2 * Screen.Width)/3, 600), new Point(Screen.Width/3 + 100, 200), textures["Ground"], true);
             }
