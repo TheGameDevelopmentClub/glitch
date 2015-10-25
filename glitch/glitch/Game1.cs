@@ -80,6 +80,10 @@ namespace glitch
 
             //gameObjects.Add(floor);
             CreateLevel();
+            CreateLevel();
+            CreateLevel();
+            CreateLevel();
+
             
             player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
@@ -233,8 +237,14 @@ namespace glitch
             }
             else if (currentLevel.LevelNumber == 2)
             {
-                //Show Level 3
+                player.SpawnPoint = new Point(30, 600 - player.Size.Y);
+                int platformHeight = 600 - 200;
 
+                currentLevel = new Level(3, player.SpawnPoint, new Point(Screen.Width - 100, platformHeight - 60), 600, textures["Door"]);
+
+                currentLevel.AddObject(new Point(-100, currentLevel.LevelGroundLevel), new Point(Screen.Width + 200, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point((2 * Screen.Width) / 3, platformHeight), new Point(Screen.Width / 3, 500), textures["Ground"], true);
+                currentLevel.AddTrampolineObject(new Point(Screen.Center.X, currentLevel.LevelGroundLevel-30), new Point(25, 25), textures["Ground"], true, 1.5f);
             }
 
             player.Teleport(player.SpawnPoint);

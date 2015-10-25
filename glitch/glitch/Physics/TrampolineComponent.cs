@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace glitch.Physics
 {
-    class TrampolineComponent : MechanicsBaseComponent
+    public class TrampolineComponent : MechanicsBaseComponent
     {
-        float jumpMagnifier;
+        float xVelocity, yVelocity;
         public override bool StopPlayerMovement
         {
             get
@@ -17,11 +17,17 @@ namespace glitch.Physics
             }
         }
 
-        public TrampolineComponent(int width, int height, float jumpMagnifier) : base(width, height, PhysicsType.MechanicsObject) { this.jumpMagnifier = jumpMagnifier; }
+        public TrampolineComponent(int width, int height, float jumpMagnifier) : base(width, height, PhysicsType.MechanicsObject) { this.xVelocity = 0; this.yVelocity = -1 * (PlayerObject.JumpSpeed * jumpMagnifier); }
+
+        public TrampolineComponent(int width, int height, int xVelocity, int yVelocity) : base (width, height, PhysicsType.MechanicsObject)
+        {
+            this.xVelocity = xVelocity;
+            this.yVelocity = yVelocity;
+        }
 
         public override void ApplyMechanic(PlayerObject player)
         {
-            player.physComp.velocity.Y = -(PlayerObject.JumpSpeed * jumpMagnifier);
+            player.physComp.velocity = new Vector2(xVelocity, yVelocity);
         }
     }
 }
