@@ -10,7 +10,7 @@ namespace glitch
 {
     public class RenderComponent
     {
-        Texture2D sprite;
+        public Texture2D sprite;
 
         public RenderComponent(Texture2D sprite)
         {

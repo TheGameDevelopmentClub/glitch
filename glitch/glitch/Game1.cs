@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using glitch.Physics;
 using System.Collections.Generic;
+using System;
+using Microsoft.Xna.Framework.Audio;
+
 
 namespace glitch
 {
@@ -20,6 +23,13 @@ namespace glitch
         static Texture2D deathCounter;
         List<Level> levels = new List<Level>();
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+
+        private SoundEffect titleSound;
+        SoundEffectInstance soundEffectInstance;
+
+        int forFlicker = 0;
+        Random r = new Random();
+        bool isColorTitle = false;
 
         public Game1()
         {
@@ -70,7 +80,6 @@ namespace glitch
 
             //gameObjects.Add(floor);
             CreateLevel();
-            //CreateLevel();
             
             player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
@@ -109,6 +118,29 @@ namespace glitch
             PhysicsSystem.Instance.checkPlayerCollisions();
             PhysicsSystem.Instance.handleCollisions();
 
+
+            if(currentLevel != null && currentLevel.LevelNumber == 0)
+            {
+                if(forFlicker >= 0)
+                {
+                    forFlicker -= gameTime.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    if(isColorTitle)
+                    {
+                        isColorTitle = false;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoW"];
+                    }
+                    else
+                    {
+                        isColorTitle = true;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoC"];
+                    }
+                    forFlicker = r.Next(75, 450);
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -143,8 +175,12 @@ namespace glitch
             textures.Add("Door", Content.Load<Texture2D>("Door"));
             textures.Add("Ground", Content.Load<Texture2D>("Ground"));
             deathCounter = Content.Load<Texture2D>("I");
+            textures.Add("LogoC", Content.Load<Texture2D>("GlitchColor"));
+            textures.Add("LogoW", Content.Load <Texture2D>("GlitchWhite"));
             textures.Add("I", deathCounter);
             textures.Add("Player", Content.Load<Texture2D>("Player"));
+
+            titleSound = Content.Load<SoundEffect>("MixedIntro");
 
         }
 
@@ -162,8 +198,25 @@ namespace glitch
             {
                 player.SpawnPoint = new Point(30, 300);
 
+
+                currentLevel = new Level(0, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
+                currentLevel.TitleFlicker = new GameObject(new Point(0, 0).ToVector2(), textures["LogoW"], true, PhysicsType.StaticObject);
+                currentLevel.LevelObjects.Add(currentLevel.TitleFlicker);
+                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width + 100, 200), textures["Ground"], true);
+
+                soundEffectInstance = titleSound.CreateInstance();
+                soundEffectInstance.IsLooped = true;
+                soundEffectInstance.Play();
+            }
+            else if (currentLevel.LevelNumber == 0)
+            {
+                soundEffectInstance.Stop();
+                player.SpawnPoint = new Point(30, 300);
+
+
                 currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
                 currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 3, 200), textures["Ground"], true);
+
                 currentLevel.AddObject(new Point((2 * Screen.Width) / 3, 600), new Point(Screen.Width / 3 + 100, 200), textures["Ground"], true);
                 currentLevel.AddTeleportObject(new Point(0 - 25 - player.Size.X, 0), new Point(25, Screen.Height), textures["Ground"], true, new Point(Screen.Width, 600 - player.Size.Y));
                 currentLevel.AddTeleportObject(new Point(Screen.Width + player.Size.X, 0), new Point(25, Screen.Height), textures["Ground"], true, new Point(0 - player.Size.X, 600 - player.Size.Y));
@@ -181,6 +234,7 @@ namespace glitch
             else if (currentLevel.LevelNumber == 2)
             {
                 //Show Level 3
+
             }
 
             player.Teleport(player.SpawnPoint);

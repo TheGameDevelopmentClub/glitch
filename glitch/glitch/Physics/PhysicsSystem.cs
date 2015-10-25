@@ -56,6 +56,7 @@ namespace glitch.Physics
             mechanicsObjects.Clear();
         }
 
+
         public Vector2 applyEasement(GameTime time, Vector2 vect)
         {
             //throw new NotImplementedException();
@@ -203,6 +204,12 @@ namespace glitch.Physics
 
                     phys.ApplyMechanic(player);
                 }
+            }
+            
+            if(player.position.Y > Game1.Screen.Height + 100)
+            {
+                player.Respawn();
+
             }
         }
 
