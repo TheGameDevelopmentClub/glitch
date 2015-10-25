@@ -39,6 +39,12 @@ namespace glitch.Physics
             playerCollisions = new List<PhysicsComponent>();
         }
 
+        public void ClearStage()
+        {
+            door = null;
+            staticObjects.Clear();
+        }
+
         public Vector2 applyEasement(GameTime time, Vector2 vect)
         {
             //throw new NotImplementedException();

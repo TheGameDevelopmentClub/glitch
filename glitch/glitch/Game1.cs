@@ -15,10 +15,9 @@ namespace glitch
         SpriteBatch spriteBatch;
         public static Rectangle Screen;
         PlayerObject player;
-        Level currentLevel;
+        public static Level currentLevel;
         List<GameObject> gameObjects;
-        int levelNumber = 0;
-
+        static Texture2D deathCounter;
         List<Level> levels = new List<Level>();
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
@@ -65,14 +64,15 @@ namespace glitch
             Texture2D playerSprite = textures["Player"];
             player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
-            
+
             //GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
             //floor.Size = new Point(Screen.Width, 200);
 
             //gameObjects.Add(floor);
             CreateLevel();
-
-            player.Respawn(player.SpawnPoint);
+            CreateLevel();
+            
+            player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
         }
 
@@ -136,34 +136,53 @@ namespace glitch
             textures.Add("Deaths", Content.Load<Texture2D>("Deaths"));
             textures.Add("Door", Content.Load<Texture2D>("Door"));
             textures.Add("Ground", Content.Load<Texture2D>("Ground"));
-            textures.Add("I", Content.Load<Texture2D>("I"));
+            deathCounter = Content.Load<Texture2D>("I");
+            textures.Add("I", deathCounter);
             textures.Add("Player", Content.Load<Texture2D>("Player"));
+
         }
 
 
         private void CreateLevel()
         {
+            PhysicsSystem.Instance.ClearStage();
+
+            if (currentLevel != null)
+            {
+                currentLevel.LevelObjects.Clear();
+            }
+
             if (currentLevel == null)
             {
                 player.SpawnPoint = new Point(30, 300);
 
                 currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
-                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width/3, 200), textures["Ground"], true);
-                currentLevel.AddObject(new Point((2 * Screen.Width)/3, 600), new Point(Screen.Width/3 + 100, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 3, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point((2 * Screen.Width) / 3, 600), new Point(Screen.Width / 3 + 100, 200), textures["Ground"], true);
             }
-            else if(currentLevel.LevelNumber == 1)
+            else if (currentLevel.LevelNumber == 1)
             {
                 player.SpawnPoint = new Point(30, 300);
+                player.DeathCount = 0;
 
-                currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
-                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width/3, 200), textures["Ground"], true);
-                currentLevel.AddObject(new Point((2 * Screen.Width)/3, 600), new Point(Screen.Width/3 + 100, 200), textures["Ground"], true);
+                currentLevel = new Level(2, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
+                currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 3, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point((2 * Screen.Width) / 3, 600), new Point(Screen.Width / 3 + 100, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(50, 650), textures["Deaths"], true);
             }
-            else if(currentLevel.LevelNumber == 2)
+            else if (currentLevel.LevelNumber == 2)
             {
-                //Render level 3
+                //Show Level 3
             }
 
+        }
+            
+        public static void AddDeathSymbols(int deaths)
+        {
+            if (currentLevel.LevelNumber == 2)
+            {
+                currentLevel.AddObject(new Point(355 + (deaths * 55), 650), deathCounter, true);
+            }
         }
 
     }

@@ -10,7 +10,9 @@ namespace glitch
     public class PlayerObject : GameObject
     {
         public float HorizontalAcceleration { get; set; }
-        public float MaxHorizontalVelocity { get; set; }
+        public static float MaxHorizontalVelocity { get; set; }
+        public static float MaxVerticalVelocity { get; set; }
+        public static float JumpSpeed { get; set; }
         public Boolean IsJumping { get; set; }
         public Point SpawnPoint { get; set; }
         public int DeathCount { get; set; }
@@ -26,7 +28,7 @@ namespace glitch
             setDefaults();
         }
 
-        public void Respawn(Point position)
+        public void Teleport(Point position)
         {
             this.Location = position.ToVector2();
         }
@@ -34,7 +36,8 @@ namespace glitch
         public void Respawn()
         {
             DeathCount++;
-            this.Respawn(SpawnPoint);
+            this.Teleport(SpawnPoint);
+            Game1.AddDeathSymbols(DeathCount);
         }
 
         /// <summary>
@@ -44,6 +47,8 @@ namespace glitch
         {
             HorizontalAcceleration = 10.0f;
             MaxHorizontalVelocity = 300f;
+            MaxVerticalVelocity = 1000f;
+            JumpSpeed = 500f;
             IsJumping = false;
             SpawnPoint = Game1.Screen.Center;
             DeathCount = 0;
