@@ -74,6 +74,14 @@ namespace glitch
             LevelObjects.Add(tempObject);
         }
 
+        public void AddTrampolineObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible, float jumpMagnifier)
+        {
+            TrampolineComponent trampComp = new TrampolineComponent(texture.Width, texture.Height, jumpMagnifier);
+            GameObject tempObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, trampComp);
+            tempObject.Size = assetSize;
+            LevelObjects.Add(tempObject);
+        }
+
         public void RenderLevel(SpriteBatch spriteBatch)
         {
             this.Door.Render(spriteBatch);
