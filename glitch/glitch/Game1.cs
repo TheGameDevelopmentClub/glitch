@@ -190,10 +190,8 @@ namespace glitch
 
             if (currentLevel == null)
             {
+
                 
-
-
-
             }//testing, remove after debug
 
             if (currentLevel == null)
@@ -284,6 +282,42 @@ namespace glitch
                 currentLevel.AddObject(new Point(-100, currentLevel.LevelGroundLevel), new Point(Screen.Width + 200, 200), textures["Ground"], true);
                 currentLevel.AddObject(new Point((2 * Screen.Width) / 3, platformHeight), new Point(Screen.Width / 3, 500), textures["Ground"], true);
                 currentLevel.AddTrampolineObject(new Point(Screen.Center.X, currentLevel.LevelGroundLevel-30), new Point(25, 25), textures["Tramp"], true, 1.5f);
+            }
+            else if(currentLevel.LevelNumber == 5)
+            {
+                player.SpawnPoint = new Point(30, 600 - player.Size.Y);
+                Point doorPoint = new Point(Screen.Width - 50, Screen.Center.Y + 100 - 60);
+
+                currentLevel = new Level(6, player.SpawnPoint, doorPoint, 600, textures["Door"]);
+
+                //Bounding Boxes
+                currentLevel.AddObject(new Point(Screen.Left - 25, 0), new Point(25, Screen.Height), textures["Ground"], true); //Left
+                currentLevel.AddObject(new Point(Screen.Right, 0), new Point(25, Screen.Height), textures["Ground"], true); //Right
+                currentLevel.AddObject(new Point(0, Screen.Top - 25), new Point(Screen.Width, 25), textures["Ground"], true); //Top
+
+                //First Platform
+                currentLevel.AddObject(new Point(0, 600), new Point(Screen.Center.X,200), textures["Ground"], true); //Main platform
+                currentLevel.AddObject(new Point(0, 600 - 100), new Point(Screen.Center.X-75,25), textures["Ground"], true); // upper horizontal
+                currentLevel.AddObject(new Point(Screen.Center.X - 100, 600 - 100 - 300), new Point(25,300), textures["Ground"], true); // left lower vertical
+                currentLevel.AddObject(new Point(Screen.Center.X-25, 600 - 100 - 300), new Point(25,400), textures["Ground"], true); //right lower vertical
+                currentLevel.AddObject(new Point(Screen.Center.X - 100, 0), new Point(25,40), textures["Ground"], true);//left upper vertical
+                currentLevel.AddObject(new Point(Screen.Center.X-25, 0), new Point(25,40), textures["Ground"], true);//right upper vertical
+
+                //Second Platform
+                currentLevel.AddObject(new Point(Screen.Center.X + 150, Screen.Center.Y), new Point(25,Screen.Center.Y), textures["Ground"], true); //vertical bar
+                currentLevel.AddObject(new Point(Screen.Center.X + 150, Screen.Center.Y - 25), new Point(Screen.Center.X,25), textures["Ground"], true); //topmost horizontal bar
+                currentLevel.AddObject(new Point(Screen.Center.X + 150, Screen.Center.Y + 100), new Point(Screen.Center.X,25), textures["Ground"], true); //bottom most horizontal bar
+
+                //Teleports
+                Point destination = doorPoint + new Point(-250, 100);
+                Point goal = doorPoint - new Point(Screen.Center.X - 230, 0);
+                currentLevel.AddTeleportObject(new Point(30, 600 - 100 - 30), new Point(25, 25), textures["Portal"], true, destination); //Left Side
+                currentLevel.AddTeleportObject(new Point(Screen.Width - 30, Screen.Center.Y - 25 - 30), new Point(25, 25), textures["Portal"], true, destination); //Right Side
+                currentLevel.AddTeleportObject(new Point(Screen.Center.X - 75, 0), new Point(50, 10), textures["Portal"], false, goal); //Hidden
+                currentLevel.AddTeleportObject(new Point(Screen.Center.X, Screen.Height), new Point(150, 10), textures["Portal"], true, destination); //OffScreen
+
+                //Trampoline
+                currentLevel.AddTrampolineObject(new Point(Screen.Center.X - 50 - 10, 600 - 30), new Point(25, 25), textures["Tramp"], true, 2.05f);
             }
             else
             {
