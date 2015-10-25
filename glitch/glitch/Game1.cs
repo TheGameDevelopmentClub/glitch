@@ -175,7 +175,6 @@ namespace glitch
             textures.Add("Tramp", Content.Load<Texture2D>("Tramps"));
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
-
         }
 
 
