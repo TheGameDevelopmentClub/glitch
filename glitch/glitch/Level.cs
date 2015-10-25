@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using glitch.Physics;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -21,12 +22,14 @@ namespace glitch
 
 
 
+
         public Level(int levelNumber, Texture2D doorContent)
         {
             this.LevelNumber = levelNumber;
             DefaultValues();
             LevelObjects = new List<GameObject>();
-            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
+
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.Door);
             this.Door.Size = new Point(30, 60);
 
         }
@@ -39,7 +42,7 @@ namespace glitch
             this.LevelGroundLevel = levelHeight;
             LevelObjects = new List<GameObject>();
 
-            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.Door);
             this.Door.Size = new Point(30, 60);
         }
 
@@ -56,14 +59,21 @@ namespace glitch
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             tempGameObject.Size = assetSize;
             LevelObjects.Add(tempGameObject);
-            tempGameObject = null;
         }
 
         public void AddObject(Point groundPoint, Texture2D texture, bool isVisible)
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             LevelObjects.Add(tempGameObject);
-            tempGameObject = null;
+
+        }
+
+        public void AddTeleportObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible, Point destination)
+        {
+            TeleportComponent teleComp = new TeleportComponent(texture.Width, texture.Height, destination);
+            GameObject tempObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, teleComp);
+            tempObject.Size = assetSize;
+            LevelObjects.Add(tempObject);
         }
 
         public void RenderLevel(SpriteBatch spriteBatch)

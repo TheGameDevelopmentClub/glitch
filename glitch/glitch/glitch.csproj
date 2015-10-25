@@ -43,8 +43,10 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="Physics\Hitbox.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Physics\MechanicsBaseComponent.cs" />
     <Compile Include="Physics\PhysicsComponent.cs" />
     <Compile Include="Physics\PhysicsSystem.cs" />
+    <Compile Include="Physics\TeleportComponent.cs" />
     <Compile Include="PlayerObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

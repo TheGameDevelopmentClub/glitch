@@ -13,6 +13,7 @@ namespace glitch
     {
         Player,
         StaticObject,
+        MechanicsObject, //Objects that impose an effect on the player or environment
         Door
     }
 
