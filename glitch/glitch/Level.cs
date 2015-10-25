@@ -17,6 +17,7 @@ namespace glitch
         public int LevelNumber { get; set; }
         public GameObject Door { get; set; }
         public List<GameObject> LevelObjects { get; set; }
+        public GameObject TitleFlicker { get; set; }
 
 
 
