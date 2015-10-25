@@ -16,7 +16,7 @@ namespace glitch
         public int LevelGroundLevel { get; set; }
         public int LevelNumber { get; set; }
         public GameObject Door { get; set; }
-        public List<GameObject> LevelGroundObjects { get; set; }
+        public List<GameObject> LevelObjects { get; set; }
 
 
 
@@ -24,7 +24,7 @@ namespace glitch
         {
             this.LevelNumber = levelNumber;
             DefaultValues();
-            LevelGroundObjects = new List<GameObject>();
+            LevelObjects = new List<GameObject>();
             this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
             this.Door.Size = new Point(30, 60);
 
@@ -36,7 +36,7 @@ namespace glitch
             this.PlayerStaringPoint = playerStartingPoint;
             this.DoorPoint = doorPoint;
             this.LevelGroundLevel = levelHeight;
-            LevelGroundObjects = new List<GameObject>();
+            LevelObjects = new List<GameObject>();
 
             this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
             this.Door.Size = new Point(30, 60);
@@ -44,17 +44,17 @@ namespace glitch
 
         private void DefaultValues()
         {
-            LevelGroundObjects = new List<GameObject>();
+            LevelObjects = new List<GameObject>();
             this.PlayerStaringPoint = new Point(40, 600);
             this.DoorPoint = new Point(1200, 600); //@TODO: Remove hard coded values
             this.LevelGroundLevel = 600;
         }
 
-        public void AddGroundObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible)
+        public void AddObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible)
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             tempGameObject.Size = assetSize;
-            LevelGroundObjects.Add(tempGameObject);
+            LevelObjects.Add(tempGameObject);
             tempGameObject = null;
         }
 
@@ -62,7 +62,7 @@ namespace glitch
         {
             this.Door.Render(spriteBatch);
 
-            foreach (GameObject gameObject in this.LevelGroundObjects)
+            foreach (GameObject gameObject in this.LevelObjects)
             {
                 gameObject.Render(spriteBatch);
             }
