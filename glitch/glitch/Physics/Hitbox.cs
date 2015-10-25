@@ -45,15 +45,15 @@ namespace glitch.Physics
         {
             Point sizeAsPoint = size.ToPoint();
             overall.Size = sizeAsPoint;
-            left.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
-            right.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
-            top.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
-            bottom.Size = new Point(sizeAsPoint.X, sizeAsPoint.Y / 3);
+            left.Size = new Point(sizeAsPoint.X / 3, sizeAsPoint.Y / 3);
+            right.Size = new Point(sizeAsPoint.X / 3, sizeAsPoint.Y / 3);
+            top.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
+            bottom.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
 
             leftOffset = new Vector2(0, (overall.Height - left.Height) / 2);
             rightOffset = new Vector2((overall.Width - right.Width), (overall.Height - right.Height) / 2);
-            topOffset = Vector2.Zero;
-            bottomOffset = new Vector2(0, size.Y - bottom.Height);
+            topOffset = new Vector2(3, 0);
+            bottomOffset = new Vector2(3, size.Y - bottom.Height);
 
             threshold = (int) Math.Pow(Math.Max(overall.Width, overall.Height), 2);
 
@@ -96,11 +96,7 @@ namespace glitch.Physics
 
             if (overall.Intersects(rect))
             {
-                if (bottom.Intersects(rect))
-                {
-                    return HitboxHit.Bottom;
-                }
-                else if (left.Intersects(rect))
+                if (left.Intersects(rect))
                 {
                     return HitboxHit.Left;
                 }
@@ -108,13 +104,13 @@ namespace glitch.Physics
                 {
                     return HitboxHit.Right;
                 }
+                else if (bottom.Intersects(rect))
+                {
+                    return HitboxHit.Bottom;
+                }
                 else if (top.Intersects(rect))
                 {
                     return HitboxHit.Top;
-                }
-                else
-                {
-                    throw new NotImplementedException();
                 }
             }
             return HitboxHit.None;

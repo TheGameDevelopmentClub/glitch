@@ -13,6 +13,7 @@ namespace glitch
     {
         Player,
         StaticObject,
+        MechanicsObject, //Objects that impose an effect on the player or environment
         Door
     }
 
@@ -54,7 +55,11 @@ namespace glitch
 
         public Vector2 ApplyVelocity(GameTime time, Vector2 position)
         {
+            this.velocity.X = Math.Min(this.velocity.X, PlayerObject.MaxHorizontalVelocity);
+            this.velocity.Y = Math.Min(this.velocity.Y, PlayerObject.MaxVerticalVelocity);
+
             Vector2 newPoint = new Vector2(position.X + (int)(this.velocity.X * time.ElapsedGameTime.TotalSeconds), position.Y + (float)(this.velocity.Y * time.ElapsedGameTime.TotalSeconds));
+
             this.UpdateHitBoxPosition(newPoint);
 
             return newPoint;

@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using glitch.Physics;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace glitch
 {
-    class Level
+    public class Level
     {
 
         public Point PlayerStaringPoint { get; set; }
@@ -16,7 +17,7 @@ namespace glitch
         public int LevelGroundLevel { get; set; }
         public int LevelNumber { get; set; }
         public GameObject Door { get; set; }
-        public List<GameObject> LevelGroundObjects { get; set; }
+        public List<GameObject> LevelObjects { get; set; }
 
 
 
@@ -24,8 +25,8 @@ namespace glitch
         {
             this.LevelNumber = levelNumber;
             DefaultValues();
-            LevelGroundObjects = new List<GameObject>();
-            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
+            LevelObjects = new List<GameObject>();
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.Door);
             this.Door.Size = new Point(30, 60);
 
         }
@@ -36,33 +37,46 @@ namespace glitch
             this.PlayerStaringPoint = playerStartingPoint;
             this.DoorPoint = doorPoint;
             this.LevelGroundLevel = levelHeight;
-            LevelGroundObjects = new List<GameObject>();
+            LevelObjects = new List<GameObject>();
 
-            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.StaticObject);
+            this.Door = new GameObject(DoorPoint.ToVector2(), doorContent, true, PhysicsType.Door);
             this.Door.Size = new Point(30, 60);
         }
 
         private void DefaultValues()
         {
-            LevelGroundObjects = new List<GameObject>();
+            LevelObjects = new List<GameObject>();
             this.PlayerStaringPoint = new Point(40, 600);
             this.DoorPoint = new Point(1200, 600); //@TODO: Remove hard coded values
             this.LevelGroundLevel = 600;
         }
 
-        public void AddGroundObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible)
+        public void AddObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible)
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             tempGameObject.Size = assetSize;
-            LevelGroundObjects.Add(tempGameObject);
-            tempGameObject = null;
+            LevelObjects.Add(tempGameObject);
+        }
+
+        public void AddObject(Point groundPoint, Texture2D texture, bool isVisible)
+        {
+            GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
+            LevelObjects.Add(tempGameObject);
+        }
+
+        public void AddTeleportObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible, Point destination)
+        {
+            TeleportComponent teleComp = new TeleportComponent(texture.Width, texture.Height, destination);
+            GameObject tempObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, teleComp);
+            tempObject.Size = assetSize;
+            LevelObjects.Add(tempObject);
         }
 
         public void RenderLevel(SpriteBatch spriteBatch)
         {
             this.Door.Render(spriteBatch);
 
-            foreach (GameObject gameObject in this.LevelGroundObjects)
+            foreach (GameObject gameObject in this.LevelObjects)
             {
                 gameObject.Render(spriteBatch);
             }

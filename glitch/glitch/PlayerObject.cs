@@ -10,9 +10,12 @@ namespace glitch
     public class PlayerObject : GameObject
     {
         public float HorizontalAcceleration { get; set; }
-        public float MaxHorizontalVelocity { get; set; }
+        public static float MaxHorizontalVelocity { get; set; }
+        public static float MaxVerticalVelocity { get; set; }
+        public static float JumpSpeed { get; set; }
         public Boolean IsJumping { get; set; }
         public Point SpawnPoint { get; set; }
+        public int DeathCount { get; set; }
 
         public PlayerObject(Vector2 position, Texture2D sprite, bool isVisible, PhysicsType type) : base(position, sprite, isVisible, type)
         {
@@ -25,6 +28,18 @@ namespace glitch
             setDefaults();
         }
 
+        public void Teleport(Point position)
+        {
+            this.Location = position.ToVector2();
+        }
+
+        public void Respawn()
+        {
+            DeathCount++;
+            this.Teleport(SpawnPoint);
+            Game1.AddDeathSymbols(DeathCount);
+        }
+
         /// <summary>
         /// Set the default values for properties of PlayerObject
         /// </summary>
@@ -32,8 +47,11 @@ namespace glitch
         {
             HorizontalAcceleration = 10.0f;
             MaxHorizontalVelocity = 300f;
+            MaxVerticalVelocity =  1000f;
+            JumpSpeed = 500f;
             IsJumping = false;
-            SpawnPoint = null;
+            SpawnPoint = Game1.Screen.Center;
+            DeathCount = 0;
         }
     }
 }
