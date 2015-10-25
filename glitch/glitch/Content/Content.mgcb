@@ -148,3 +148,9 @@
 /processorParam:Quality=Best
 /build:doorsound.wav
 
+#begin deathsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:deathsound.wav
+

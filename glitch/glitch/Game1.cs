@@ -28,6 +28,7 @@ namespace glitch
 
         private SoundEffect titleSound;
         SoundEffectInstance soundEffectInstance;
+        SoundEffectInstance levelMusic;
 
         int forFlicker = 0;
         Random r = new Random();
@@ -178,6 +179,7 @@ namespace glitch
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
             sounds.Add("jump", Content.Load<SoundEffect>("Jump"));
+            sounds.Add("death", Content.Load<SoundEffect>("deathsounds"));
             sounds.Add("door", Content.Load<SoundEffect>("doorsound"));
             sounds.Add("teleport", Content.Load<SoundEffect>("teleport"));
             sounds.Add("trampoline", Content.Load<SoundEffect>("trampolineNoise"));
@@ -203,6 +205,10 @@ namespace glitch
 
             if (currentLevel == null)
             {
+                if(levelMusic != null)
+                {
+                    levelMusic.Stop();
+                }
                 player.SpawnPoint = new Point(30, 300);
 
 
@@ -217,11 +223,18 @@ namespace glitch
 
                 soundEffectInstance = titleSound.CreateInstance();
                 soundEffectInstance.IsLooped = true;
+                soundEffectInstance.Volume = 0.5f;
                 soundEffectInstance.Play();
             }
             else if (currentLevel.LevelNumber == 0)
             {
                 soundEffectInstance.Stop();
+
+                levelMusic = sounds["stagemusic"].CreateInstance();
+                levelMusic.IsLooped = true;
+                levelMusic.Volume = 0.25f;
+                levelMusic.Play();
+
                 player.SpawnPoint = new Point(30, 300);
 
 

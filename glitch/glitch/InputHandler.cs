@@ -43,6 +43,7 @@ namespace glitch
                 {
                     playerObject.physComp.velocity.Y = -PlayerObject.JumpSpeed;
                     playerObject.IsJumping = true;
+                    Game1.sounds["jump"].Play();
                     //TODO: Change the Vertical velocity to a higher or lower based on play.
                 }
             }
