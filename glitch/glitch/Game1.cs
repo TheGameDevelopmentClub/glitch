@@ -192,6 +192,7 @@ namespace glitch
             textures.Add("I", deathCounter);
             textures.Add("Portal", Content.Load<Texture2D>("Portal"));
             textures.Add("Player", Content.Load<Texture2D>("Player"));
+            textures.Add("Tramp", Content.Load<Texture2D>("Tramps"));
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
 
@@ -288,7 +289,6 @@ namespace glitch
                 currentLevel.AddObject(new Point(80 + 200, 200), new Point(120, 800), textures["Ground"], true);
                 currentLevel.AddObject(new Point(80 + 200, 600), new Point(1200, 210), textures["Ground"], true);
                 currentLevel.AddObject(new Point((17 * (Screen.Width / 20)), 410), new Point(Screen.Width / 3 + 200, 800), textures["Ground"], true);
-
 
 
                 currentLevel.AddTeleportObject(new Point(80, Screen.Height), new Point(200, 200), textures["Portal"], false, new Point(1200, 200 - player.Size.Y));
