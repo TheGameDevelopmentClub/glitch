@@ -45,8 +45,8 @@ namespace glitch.Physics
         {
             Point sizeAsPoint = size.ToPoint();
             overall.Size = sizeAsPoint;
-            left.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
-            right.Size = new Point(sizeAsPoint.X / 2, sizeAsPoint.Y / 3);
+            left.Size = new Point(sizeAsPoint.X / 3, sizeAsPoint.Y / 3);
+            right.Size = new Point(sizeAsPoint.X / 3, sizeAsPoint.Y / 3);
             top.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
             bottom.Size = new Point(sizeAsPoint.X - 6, sizeAsPoint.Y / 3);
 
@@ -96,11 +96,7 @@ namespace glitch.Physics
 
             if (overall.Intersects(rect))
             {
-                if (bottom.Intersects(rect))
-                {
-                    return HitboxHit.Bottom;
-                }
-                else if (left.Intersects(rect))
+                if (left.Intersects(rect))
                 {
                     return HitboxHit.Left;
                 }
@@ -108,12 +104,13 @@ namespace glitch.Physics
                 {
                     return HitboxHit.Right;
                 }
+                else if (bottom.Intersects(rect))
+                {
+                    return HitboxHit.Bottom;
+                }
                 else if (top.Intersects(rect))
                 {
                     return HitboxHit.Top;
-                }
-                else
-                {
                 }
             }
             return HitboxHit.None;

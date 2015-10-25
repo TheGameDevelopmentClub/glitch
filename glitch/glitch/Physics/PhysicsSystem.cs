@@ -93,12 +93,12 @@ namespace glitch.Physics
                         break;
 
                     case HitboxHit.Right:
-                        offset.X -= phys.hitBox.overall.Left - player.physComp.hitBox.overall.Right;
+                        offset.X -=  player.physComp.hitBox.overall.Right - phys.hitBox.overall.Left;
                         player.physComp.velocity.X = 0;
                         break;
 
                     case HitboxHit.Left:
-                        offset.X += player.physComp.hitBox.overall.Left - phys.hitBox.overall.Right;
+                        offset.X += phys.hitBox.overall.Right - player.physComp.hitBox.overall.Left;
                         player.physComp.velocity.X = 0;
                         break;
 

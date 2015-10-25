@@ -65,13 +65,14 @@ namespace glitch
             Texture2D playerSprite = textures["Player"];
             player = new PlayerObject(Screen.Center.ToVector2(), playerSprite, true, PhysicsType.Player);
             player.Size = new Point(playerSprite.Width / 2, playerSprite.Height / 2);
-
+            
             //GameObject floor = new GameObject(0, Screen.Bottom - 100, playerSprite, true, PhysicsType.StaticObject);
             //floor.Size = new Point(Screen.Width, 200);
 
             //gameObjects.Add(floor);
             CreateLevel();
 
+            player.Respawn(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
         }
 
@@ -179,9 +180,11 @@ namespace glitch
             //{
             //    //Render level 3
             //}
+            player.SpawnPoint = new Point(30, 300);
 
         }
 
+            
         public static void AddDeathSymbols(int deaths)
         {
             if (currentLevel.LevelNumber == 2)
