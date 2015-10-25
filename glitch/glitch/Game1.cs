@@ -30,6 +30,7 @@ namespace glitch
         int forFlicker = 0;
         Random r = new Random();
         bool isColorTitle = false;
+        int disableInputHandler = 0;
 
         public Game1()
         {
@@ -80,10 +81,6 @@ namespace glitch
 
             //gameObjects.Add(floor);
             CreateLevel();
-            CreateLevel();
-            CreateLevel();
-            CreateLevel();
-
             
             player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
@@ -112,9 +109,20 @@ namespace glitch
             {
                 PhysicsSystem.Instance.playerTouchedDoor = false;
                 CreateLevel();
+                disableInputHandler = 500;
             }
 
-            InputHandler.Instance.handlePlayerInput(player);
+            if (disableInputHandler > 0)
+            {
+                disableInputHandler -= gameTime.ElapsedGameTime.Milliseconds;
+                InputHandler.Instance.DisablePlayerInput(player);
+            }
+            else 
+            {
+                InputHandler.Instance.handlePlayerInput(player);
+                disableInputHandler = 0;
+            }
+
 
             player.Location = player.physComp.ApplyVelocity(gameTime, player.Location);
 
@@ -123,27 +131,7 @@ namespace glitch
             PhysicsSystem.Instance.handleCollisions();
 
 
-            if(currentLevel != null && currentLevel.LevelNumber == 0)
-            {
-                if(forFlicker >= 0)
-                {
-                    forFlicker -= gameTime.ElapsedGameTime.Milliseconds;
-                }
-                else
-                {
-                    if(isColorTitle)
-                    {
-                        isColorTitle = false;
-                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoW"];
-                    }
-                    else
-                    {
-                        isColorTitle = true;
-                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoC"];
-                    }
-                    forFlicker = r.Next(75, 450);
-                }
-            }
+            PlayerMovement(gameTime);
 
             base.Update(gameTime);
         }
@@ -182,7 +170,9 @@ namespace glitch
             textures.Add("LogoC", Content.Load<Texture2D>("GlitchColor"));
             textures.Add("LogoW", Content.Load <Texture2D>("GlitchWhite"));
             textures.Add("I", deathCounter);
+            textures.Add("Portal", Content.Load<Texture2D>("Portal"));
             textures.Add("Player", Content.Load<Texture2D>("Player"));
+            textures.Add("Tramp", Content.Load<Texture2D>("Tramps"));
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
 
@@ -200,6 +190,14 @@ namespace glitch
 
             if (currentLevel == null)
             {
+                
+
+
+
+            }//testing, remove after debug
+
+            if (currentLevel == null)
+            {
                 player.SpawnPoint = new Point(30, 300);
 
 
@@ -207,6 +205,10 @@ namespace glitch
                 currentLevel.TitleFlicker = new GameObject(new Point(0, 0).ToVector2(), textures["LogoW"], true, PhysicsType.StaticObject);
                 currentLevel.LevelObjects.Add(currentLevel.TitleFlicker);
                 currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width + 100, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(-100, 0), new Point(100, Screen.Height + 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(Screen.Width, 0), new Point(100, Screen.Height + 200), textures["Ground"], true);
+
+
 
                 soundEffectInstance = titleSound.CreateInstance();
                 soundEffectInstance.IsLooped = true;
@@ -222,8 +224,10 @@ namespace glitch
                 currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 3, 200), textures["Ground"], true);
 
                 currentLevel.AddObject(new Point((2 * Screen.Width) / 3, 600), new Point(Screen.Width / 3 + 100, 200), textures["Ground"], true);
-                currentLevel.AddTeleportObject(new Point(0 - 25 - player.Size.X, 0), new Point(25, Screen.Height), textures["Ground"], true, new Point(Screen.Width, 600 - player.Size.Y));
-                currentLevel.AddTeleportObject(new Point(Screen.Width + player.Size.X, 0), new Point(25, Screen.Height), textures["Ground"], true, new Point(0 - player.Size.X, 600 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(0 - 25 - player.Size.X, 0), new Point(25, Screen.Height), textures["Portal"], true, new Point(Screen.Width, 600 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(Screen.Width + player.Size.X, 0), new Point(25, Screen.Height), textures["Portal"], true, new Point(0 - player.Size.X, 600 - player.Size.Y));
+
+
             }
             else if (currentLevel.LevelNumber == 1)
             {
@@ -237,14 +241,54 @@ namespace glitch
             }
             else if (currentLevel.LevelNumber == 2)
             {
+                player.SpawnPoint = new Point(30, 300);
+                player.DeathCount = 0;
+
+                currentLevel = new Level(3, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
+
+                currentLevel.AddObject(new Point(-100, 600), new Point(180, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point(500, 600), new Point(Screen.Width / 5 + 200, 200), textures["Ground"], true);
+                currentLevel.AddObject(new Point((17 * (Screen.Width / 20)), 600), new Point(Screen.Width / 3 + 200, 200), textures["Ground"], true);
+
+
+
+                currentLevel.AddTeleportObject(new Point(0 - 25 - player.Size.X, 0), new Point(25, Screen.Height), textures["Portal"], true, new Point(550, 500 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(500 + (Screen.Width / 5), Screen.Height), new Point((17 * (Screen.Width / 20)) - (500 + (Screen.Width / 5)), 100), textures["Ground"], true, new Point(Screen.Width - 150, 400 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(500 + (Screen.Width / 5) + 350, 400), new Point((17 * (Screen.Width / 20)) - (500 + (Screen.Width / 5) + 350), 600), textures["Ground"], false, new Point(550, 500 - player.Size.Y));
+
+
+            }
+            else if (currentLevel.LevelNumber == 3)
+            {
+                player.SpawnPoint = new Point(30, 200);
+                player.DeathCount = 0;
+
+                currentLevel = new Level(4, player.SpawnPoint, new Point(Screen.Width - 100, 350), 600, textures["Door"]);
+
+                currentLevel.AddObject(new Point(-100, 300), new Point(180, 600), textures["Ground"], true);
+                currentLevel.AddObject(new Point(80 + 200, 200), new Point(120, 800), textures["Ground"], true);
+                currentLevel.AddObject(new Point(80 + 200, 600), new Point(1200, 210), textures["Ground"], true);
+                currentLevel.AddObject(new Point((17 * (Screen.Width / 20)), 410), new Point(Screen.Width / 3 + 200, 800), textures["Ground"], true);
+
+
+                currentLevel.AddTeleportObject(new Point(80, Screen.Height), new Point(200, 200), textures["Portal"], false, new Point(1200, 200 - player.Size.Y));
+                currentLevel.AddTeleportObject(new Point(400, 560), new Point(40, 40), textures["Portal"], true, new Point(30, 200));
+            }
+            else if(currentLevel.LevelNumber == 4)
+            {
                 player.SpawnPoint = new Point(30, 600 - player.Size.Y);
                 int platformHeight = 600 - 200;
 
-                currentLevel = new Level(3, player.SpawnPoint, new Point(Screen.Width - 100, platformHeight - 60), 600, textures["Door"]);
+                currentLevel = new Level(5, player.SpawnPoint, new Point(Screen.Width - 100, platformHeight - 60), 600, textures["Door"]);
 
                 currentLevel.AddObject(new Point(-100, currentLevel.LevelGroundLevel), new Point(Screen.Width + 200, 200), textures["Ground"], true);
                 currentLevel.AddObject(new Point((2 * Screen.Width) / 3, platformHeight), new Point(Screen.Width / 3, 500), textures["Ground"], true);
-                currentLevel.AddTrampolineObject(new Point(Screen.Center.X, currentLevel.LevelGroundLevel-30), new Point(25, 25), textures["Ground"], true, 1.5f);
+                currentLevel.AddTrampolineObject(new Point(Screen.Center.X, currentLevel.LevelGroundLevel-30), new Point(25, 25), textures["Tramp"], true, 1.5f);
+            }
+            else
+            {
+                currentLevel = null;
+                CreateLevel();
             }
 
             player.Teleport(player.SpawnPoint);
@@ -256,6 +300,31 @@ namespace glitch
             if (currentLevel.LevelNumber == 2)
             {
                 currentLevel.AddObject(new Point(355 + (deaths * 55), 650), deathCounter, true);
+            }
+        }
+
+        private void PlayerMovement(GameTime gameTime)
+        {
+            if (currentLevel != null && currentLevel.LevelNumber == 0)
+            {
+                if (forFlicker >= 0)
+                {
+                    forFlicker -= gameTime.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    if (isColorTitle)
+                    {
+                        isColorTitle = false;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoW"];
+                    }
+                    else
+                    {
+                        isColorTitle = true;
+                        currentLevel.TitleFlicker.rendComp.sprite = textures["LogoC"];
+                    }
+                    forFlicker = r.Next(75, 450);
+                }
             }
         }
 

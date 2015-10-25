@@ -74,5 +74,14 @@ namespace glitch
             previousGamePadState = currentGamePadState;
         }
 
+        public void DisablePlayerInput(PlayerObject player)
+        {
+            KeyboardState disableState = Keyboard.GetState();
+            if(disableState.IsKeyDown(Keys.Left) || disableState.IsKeyDown(Keys.Right) || disableState.IsKeyDown(Keys.Space))
+            {
+                player.physComp.velocity.X = 0;
+            }
+        }
+
     }
 }
