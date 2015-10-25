@@ -70,7 +70,6 @@ namespace glitch
 
             //gameObjects.Add(floor);
             CreateLevel();
-            CreateLevel();
             
             player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
@@ -159,6 +158,7 @@ namespace glitch
                 currentLevel = new Level(1, player.SpawnPoint, new Point(Screen.Width - 100, 540), 600, textures["Door"]);
                 currentLevel.AddObject(new Point(-100, 600), new Point(Screen.Width / 3, 200), textures["Ground"], true);
                 currentLevel.AddObject(new Point((2 * Screen.Width) / 3, 600), new Point(Screen.Width / 3 + 100, 200), textures["Ground"], true);
+                currentLevel.AddTeleportObject(new Point(10, 400), new Point(25, 100), textures["Ground"], true, player.SpawnPoint);
             }
             else if (currentLevel.LevelNumber == 1)
             {

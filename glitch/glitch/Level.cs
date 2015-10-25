@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using glitch.Physics;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -55,14 +56,20 @@ namespace glitch
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             tempGameObject.Size = assetSize;
             LevelObjects.Add(tempGameObject);
-            tempGameObject = null;
         }
 
         public void AddObject(Point groundPoint, Texture2D texture, bool isVisible)
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             LevelObjects.Add(tempGameObject);
-            tempGameObject = null;
+        }
+
+        public void AddTeleportObject(Point groundPoint, Point assetSize, Texture2D texture, bool isVisible, Point destination)
+        {
+            TeleportComponent teleComp = new TeleportComponent(texture.Width, texture.Height, destination);
+            GameObject tempObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, teleComp);
+            tempObject.Size = assetSize;
+            LevelObjects.Add(tempObject);
         }
 
         public void RenderLevel(SpriteBatch spriteBatch)

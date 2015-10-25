@@ -47,7 +47,7 @@ namespace glitch
         {
             HorizontalAcceleration = 10.0f;
             MaxHorizontalVelocity = 300f;
-            MaxVerticalVelocity = 1000f;
+            MaxVerticalVelocity = float.MaxValue;// 1000f;
             JumpSpeed = 500f;
             IsJumping = false;
             SpawnPoint = Game1.Screen.Center;

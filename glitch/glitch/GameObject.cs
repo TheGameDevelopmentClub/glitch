@@ -38,6 +38,14 @@ namespace glitch
             initGameObject(new Vector2(x, y), sprite, isVisible, type);
         }
 
+        public GameObject(Vector2 position, Texture2D sprite, bool isVisible, MechanicsBaseComponent component)
+        {
+            initGameObject(position, sprite, isVisible, PhysicsType.MechanicsObject);
+            this.physComp = component;
+            PhysicsSystem.Instance.addMechanicObject(component);
+            this.physComp.UpdateHitBoxPosition(position);
+        }
+
         private void initGameObject(Vector2 position, Texture2D sprite, bool isVisible, PhysicsType type)
         {
             //this.position = position;
@@ -46,12 +54,13 @@ namespace glitch
             this.isVisible = isVisible;
 
             this.rendComp = new RenderComponent(sprite);
-            this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
 
-            this.physComp.UpdateHitBoxPosition(position);
-            
-            if(type == PhysicsType.StaticObject)
+            if(type != PhysicsType.MechanicsObject)
+            {
+                this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
                 PhysicsSystem.Instance.addStaticObject(this.physComp);
+                this.physComp.UpdateHitBoxPosition(position);
+            }
         } 
 
         public void Render(SpriteBatch batch)
