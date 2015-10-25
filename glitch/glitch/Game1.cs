@@ -24,6 +24,8 @@ namespace glitch
         List<Level> levels = new List<Level>();
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
+        Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+
         private SoundEffect titleSound;
         SoundEffectInstance soundEffectInstance;
 
@@ -175,6 +177,12 @@ namespace glitch
             textures.Add("Tramp", Content.Load<Texture2D>("Tramps"));
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
+
+            sounds.Add("jump", Content.Load<SoundEffect>("Jump"));
+            sounds.Add("door", Content.Load<SoundEffect>("doorsound"));
+            sounds.Add("teleport", Content.Load<SoundEffect>("teleport"));
+            sounds.Add("trampoline", Content.Load<SoundEffect>("trampolineNoise"));
+            sounds.Add("stagemusic", Content.Load<SoundEffect>("stagemusic"));
 
         }
 
