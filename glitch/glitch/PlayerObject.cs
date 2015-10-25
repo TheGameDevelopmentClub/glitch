@@ -36,6 +36,7 @@ namespace glitch
         public void Respawn()
         {
             DeathCount++;
+            Game1.sounds["death"].Play();
             this.Teleport(SpawnPoint);
             Game1.AddDeathSymbols(DeathCount);
         }

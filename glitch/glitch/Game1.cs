@@ -179,7 +179,7 @@ namespace glitch
 
             titleSound = Content.Load<SoundEffect>("MixedIntro");
             sounds.Add("jump", Content.Load<SoundEffect>("Jump"));
-            sounds.Add("death", Content.Load<SoundEffect>("deathsounds"));
+            sounds.Add("death", Content.Load<SoundEffect>("deathsound"));
             sounds.Add("door", Content.Load<SoundEffect>("doorsound"));
             sounds.Add("teleport", Content.Load<SoundEffect>("teleport"));
             sounds.Add("trampoline", Content.Load<SoundEffect>("trampolineNoise"));
