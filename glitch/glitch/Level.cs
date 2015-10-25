@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace glitch
 {
-    class Level
+    public class Level
     {
 
         public Point PlayerStaringPoint { get; set; }
@@ -54,6 +54,13 @@ namespace glitch
         {
             GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             tempGameObject.Size = assetSize;
+            LevelObjects.Add(tempGameObject);
+            tempGameObject = null;
+        }
+
+        public void AddObject(Point groundPoint, Texture2D texture, bool isVisible)
+        {
+            GameObject tempGameObject = new GameObject(groundPoint.ToVector2(), texture, isVisible, PhysicsType.StaticObject);
             LevelObjects.Add(tempGameObject);
             tempGameObject = null;
         }
