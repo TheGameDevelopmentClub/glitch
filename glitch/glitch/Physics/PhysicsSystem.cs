@@ -24,6 +24,8 @@ namespace glitch.Physics
             }
         }
         public double gravity = 1000;
+        public bool playerTouchedDoor = false;
+        private bool playerCollidingWithDoor = false;
 
         public PlayerObject player;
         List<PhysicsComponent> staticObjects;
@@ -69,6 +71,11 @@ namespace glitch.Physics
             mechanicsObjects.Add(newComponent);
         }
 
+        public void addDoorObject(PhysicsComponent newComponent)
+        {
+            door = newComponent;
+        }
+
         public void applyGravityToPlayer(GameTime time)
         {
             player.physComp.velocity.Y += (float)(this.gravity * time.ElapsedGameTime.TotalSeconds);
@@ -76,6 +83,8 @@ namespace glitch.Physics
 
         private bool isComponentCloseEnoughToPlayer(PhysicsComponent phys)
         {
+            if (phys == null) return false;
+
             Vector2 diffVector = phys.hitBox.overall.Center.ToVector2() - player.physComp.hitBox.overall.Center.ToVector2();
 
             if (player.physComp.hitBox.isNearby(phys.hitBox))
@@ -119,6 +128,15 @@ namespace glitch.Physics
                 if (isCollidingWithPlayer(mech))
                     playerMechanicsCollisions.Add(mech);
             }
+
+            if (isComponentCloseEnoughToPlayer(door))
+            {
+                if (isCollidingWithPlayer(door))
+                {
+                    playerCollidingWithDoor = true;
+                }
+            }
+            
         }
 
         private void StopPlayerMotionOnCollision(PhysicsComponent phys)
@@ -158,24 +176,32 @@ namespace glitch.Physics
 
         public void handleCollisions()
         {
-            PhysicsComponent playerPhys = player.physComp;
-            
-            if(player.position.Y > Game1.Screen.Height + 100)
+            if (playerCollidingWithDoor)
             {
-                player.Respawn();
+                playerCollidingWithDoor = false;
+                playerTouchedDoor = true;
             }
-
-            foreach(PhysicsComponent phys in playerStaticCollisions)
+            else
             {
-                StopPlayerMotionOnCollision(phys);
-            }
+                PhysicsComponent playerPhys = player.physComp;
 
-            foreach(MechanicsBaseComponent phys in playerMechanicsCollisions)
-            {
-                if(phys.StopPlayerMovement)
+                if (player.position.Y > Game1.Screen.Height + 100)
+                {
+                    player.Respawn();
+                }
+
+                foreach (PhysicsComponent phys in playerStaticCollisions)
+                {
                     StopPlayerMotionOnCollision(phys);
+                }
 
-                phys.ApplyMechanic(player);
+                foreach (MechanicsBaseComponent phys in playerMechanicsCollisions)
+                {
+                    if (phys.StopPlayerMovement)
+                        StopPlayerMotionOnCollision(phys);
+
+                    phys.ApplyMechanic(player);
+                }
             }
         }
 

@@ -70,6 +70,7 @@ namespace glitch
 
             //gameObjects.Add(floor);
             CreateLevel();
+            //CreateLevel();
             
             player.Teleport(player.SpawnPoint);
             PhysicsSystem.Instance.player = player;
@@ -93,6 +94,12 @@ namespace glitch
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (PhysicsSystem.Instance.playerTouchedDoor)
+            {
+                PhysicsSystem.Instance.playerTouchedDoor = false;
+                CreateLevel();
+            }
 
             InputHandler.Instance.handlePlayerInput(player);
 
@@ -142,7 +149,7 @@ namespace glitch
         }
 
 
-        private void CreateLevel()
+        public void CreateLevel()
         {
             PhysicsSystem.Instance.ClearStage();
 
@@ -175,6 +182,8 @@ namespace glitch
             {
                 //Show Level 3
             }
+
+            player.Teleport(player.SpawnPoint);
 
         }
             

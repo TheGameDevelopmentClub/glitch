@@ -58,7 +58,15 @@ namespace glitch
             if(type != PhysicsType.MechanicsObject)
             {
                 this.physComp = new PhysicsComponent(sprite.Width, sprite.Height, type);
-                PhysicsSystem.Instance.addStaticObject(this.physComp);
+
+                if (type == PhysicsType.StaticObject)
+                    PhysicsSystem.Instance.addStaticObject(this.physComp);
+                else if (type == PhysicsType.Door)
+                    PhysicsSystem.Instance.addDoorObject(this.physComp);
+                else if (type == PhysicsType.Player) { }
+                else
+                    throw new NotSupportedException("The type [" + type.ToString() + "] is not supported by the Physics System yet"); 
+
                 this.physComp.UpdateHitBoxPosition(position);
             }
         } 
