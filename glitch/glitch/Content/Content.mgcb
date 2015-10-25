@@ -118,12 +118,6 @@
 /processorParam:TextureFormat=Color
 /build:Tramps.png
 
-#begin door.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:door.wav
-
 #begin Jump.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -147,4 +141,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:stagemusic.wav
+
+#begin doorsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:doorsound.wav
 
