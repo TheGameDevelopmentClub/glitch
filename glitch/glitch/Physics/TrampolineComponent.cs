@@ -28,6 +28,7 @@ namespace glitch.Physics
         public override void ApplyMechanic(PlayerObject player)
         {
             player.physComp.velocity = new Vector2(xVelocity, yVelocity);
+            Game1.sounds["trampoline"].Play();
         }
     }
 }

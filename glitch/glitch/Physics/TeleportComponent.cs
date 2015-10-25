@@ -27,6 +27,7 @@ namespace glitch.Physics
         public override void ApplyMechanic(PlayerObject player)
         {
             player.Teleport(Destination);
+            Game1.sounds["teleport"].Play();
         }
     }
 }

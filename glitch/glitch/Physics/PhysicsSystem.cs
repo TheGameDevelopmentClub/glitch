@@ -182,6 +182,7 @@ namespace glitch.Physics
             {
                 playerCollidingWithDoor = false;
                 playerTouchedDoor = true;
+                Game1.sounds["door"].Play();
             }
             else
             {
