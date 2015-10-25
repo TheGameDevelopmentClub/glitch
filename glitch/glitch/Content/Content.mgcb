@@ -90,3 +90,9 @@
 /processorParam:TextureFormat=Color
 /build:GlitchWhite.png
 
+#begin MixedIntro.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:MixedIntro.wav
+
