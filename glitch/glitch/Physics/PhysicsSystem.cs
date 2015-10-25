@@ -51,6 +51,7 @@ namespace glitch.Physics
 
         public void ClearStage()
         {
+            door = null;
             staticObjects.Clear();
             mechanicsObjects.Clear();
         }
